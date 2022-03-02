@@ -1,1 +1,1 @@
-# mod3-project-bakes
+This app was jointly developed by michieet, janiceyap, m-chocolate, normanhfz and quackz90 in a 5 days sprint as part of our module project for NTU / Skills Union software Developer Immersive Program.
