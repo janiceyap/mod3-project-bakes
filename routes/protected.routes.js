@@ -72,7 +72,10 @@ router.post("/protected/user", userController.register);
 
 
 // Manuspon
-
+const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
+const purchaseHistoriesController = new PurchaseHistoriesController();
+router.get("/protected/purchasehistories", purchaseHistoriesController.showAll);
+router.post("/protected/purchasehistories", purchaseHistoriesController.newPurchase);
 
 
 

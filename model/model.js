@@ -1,9 +1,9 @@
 // Import sequelize
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize("project_db", "postgres", "N3NL8bAxAghi", {
+const sequelize = new Sequelize("socialbakes", "student", "student", {
   host: "localhost",
   dialect: "postgres",
 });
@@ -46,7 +46,8 @@ const FollowChef = require("./followchef.model")(sequelize);
 
 
 // Manuspon
-
+const PurchaseHistories = require("./purchasehistories.model")(sequelize);
+const Bookmark = require("./bookmark.model")(sequelize);
 
 
 
@@ -103,9 +104,16 @@ User.hasMany(FollowChef, {
 
 
 // Manuspon
+PurchaseHistories.belongsTo(User, {
+  foreignKey: "userId"
+})
+// PurchaseHistories.hasMany(Receipe, {
+//   foreignKey: "recipeId"
+// })
 
-
-
+Bookmark.belongsTo(User, {
+  foreignKey: "userId"
+})
 
 
 
@@ -120,7 +128,9 @@ module.exports = {
   sequelize,
   testConnection,
   User,
-  FollowChef
+  FollowChef,
+  PurchaseHistories,
+  Bookmark
 
 
 
