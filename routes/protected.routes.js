@@ -8,10 +8,10 @@ router.get("/protected", (req, res) => {
 // All to Initialize Own Protected Routers Here
 
 // Janice
-const VehicleController = require("../controllers/vehicle.controller")
-const vehicleController = new VehicleController();
-router.get("/protected/vehicle", vehicleController.showAll);
-
+const UserController = require("../controller/user.controller")
+const userController = new UserController();
+router.get("/protected/user", userController.showAll);
+router.post("/protected/user", userController.register);
 
 
 

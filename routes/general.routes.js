@@ -8,9 +8,9 @@ router.get("/general", (req, res) => {
 // All to Initialize Own General Routers Here
 
 // Janice
-const VehicleController = require("../controllers/vehicle.controller")
-const vehicleController = new VehicleController();
-router.get("/general/vehicle", vehicleController.showAll);
+// const UserController = require("../controller/user.controller")
+// const userController = new UserController();
+// router.get("/general/vehicle", vehicleController.showAll);
 
 
 
