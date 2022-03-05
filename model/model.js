@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize("lesson_db", "postgres", "N3NL8bAxAghi", {
+const sequelize = new Sequelize("project_db", "postgres", "N3NL8bAxAghi", {
   host: "localhost",
   dialect: "postgres",
 });
@@ -22,8 +22,8 @@ async function testConnection() {
 
 // Import model(s)
 // Janice
-const Vehicle = require("./vehicle")(sequelize);
-const Driver = require("./driver")(sequelize);
+const User = require("./user.model")(sequelize);
+const FollowChef = require("./followchef.model")(sequelize);
 
 
 
@@ -53,13 +53,13 @@ const Driver = require("./driver")(sequelize);
 
 // Create associations
 // Janice
-Vehicle.belongsTo(Driver, {
-    foreignKey:"driverId"
+User.hasMany(FollowChef, {
+  foreignKey:"chefId",
 });
 
-
-
-
+User.hasMany(FollowChef, {
+  foreignKey:"followerId",
+});
 
 
 
@@ -119,8 +119,8 @@ Vehicle.belongsTo(Driver, {
 module.exports = {
   sequelize,
   testConnection,
-  Vehicle,
-  Driver
+  User,
+  FollowChef
 
 
 
