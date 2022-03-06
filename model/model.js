@@ -1,9 +1,9 @@
 // Import sequelize
 const { Sequelize } = require("sequelize");
-
+require('dotenv').config()
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize("project-bake", "postgres", "psqlpw", {
+const sequelize = new Sequelize(process.env.DB_NAME, "postgres", process.env.DB_PASSWORD, {
   host: "localhost",
   dialect: "postgres",
 });

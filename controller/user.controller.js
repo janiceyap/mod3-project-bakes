@@ -49,7 +49,7 @@ class UserController {
         return res.json({
             status_code: result.status,
             message: result.message,
-            data: result.data
+            JWToken: result.jwt
         });
     }
 }

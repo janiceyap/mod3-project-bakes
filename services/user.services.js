@@ -1,7 +1,8 @@
 const { User, FollowChef } = require( "../model/model" );
 const bcrypt = require( 'bcrypt' );
 const jwt = require( 'jsonwebtoken' );
-const saltRounds = 10; 
+require('dotenv').config()
+const saltRounds = 10;
 let passwordHash = "";
 
 module.exports = {
@@ -95,11 +96,56 @@ module.exports = {
         return result;
     },
 
-    login: async (email, pwd) => {
+    login: async (email, password) => {
 
+        let result = {
+            message: null,
+            status: null,
+            jwt: null
+        }
 
+        let match = false;
 
+        if (!email || !password){
+            result.message = `Missing email or password in input.`;
+            result.status = 404;
+            return result;
+        }
 
-        
+        // Look for the email in the database
+        const login = await User.findAll({
+            where: {
+                email : email
+            },
+        });
+
+        // check if email is already registered
+        if ( login.length == 0 ){
+            result.message = `Email: ${email} is not registered.`
+            result.status = 404;
+            return result;
+        }
+
+        match = await bcrypt.compare(password, login[0].hashedPwd);
+
+        if (!match) {
+            result.message = `Login Failed. Please check password.`;
+            result.status = 404;
+            return result;
+        }
+
+        // Generate JWToken here.
+
+        const loginData = {
+            id: login[0].id,
+            email: login[0].email
+        };
+
+        const token = jwt.sign(loginData, process.env.JWT_SECRET_KEY);
+        result.jwt = token;
+
+        result.message = `Login Success!`;
+        result.status = 200;
+        return result;        
     }
 }
