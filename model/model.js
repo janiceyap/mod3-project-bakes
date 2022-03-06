@@ -28,9 +28,9 @@ const FollowChef = require("./followchef.model")(sequelize);
 
 
 // JianNan
-
-
-
+const Recipe= require('./recipe.model')(sequelize);
+const RecipeRating = require('./recipeRating.model')(sequelize);
+const RecipePic = require('./recipePic.model')(sequelize);
 
 
 //Michelle
@@ -64,18 +64,18 @@ User.hasMany(FollowChef, {
 
 
 // JianNan
-
-
-
-
-
-
-
-
-
-
-
-
+Recipe.belongsTo(User,{
+  foreignKey: 'userId',
+});
+RecipePic.belongsTo(Recipe,{
+  foreignKey:'recipeId',
+});
+RecipeRating.belongsTo(Recipe,{
+  foreignKey:'recipeId',
+});
+RecipeRating.belongsTo(User,{
+  foreignKey:'reviewerUserId',
+});
 //Michelle
 
 
