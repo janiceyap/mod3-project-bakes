@@ -1,9 +1,9 @@
 // Import sequelize
-const { Sequelize, DataTypes } = require("sequelize");
-
+const { Sequelize } = require("sequelize");
+require('dotenv').config()
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize("socialbakes", "student", "student", {
+const sequelize = new Sequelize(process.env.DB_NAME, "postgres", process.env.DB_PASSWORD, {
   host: "localhost",
   dialect: "postgres",
 });
@@ -18,7 +18,9 @@ async function testConnection() {
     console.error("Unable to connect to the database:", error);
     return false;
   }
-}
+};
+
+
 
 // Import model(s)
 // Janice
@@ -28,9 +30,9 @@ const FollowChef = require("./followchef.model")(sequelize);
 
 
 // JianNan
-
-
-
+const Recipe= require('./recipe.model')(sequelize);
+const RecipeRating = require('./recipeRating.model')(sequelize);
+const RecipePic = require('./recipePic.model')(sequelize);
 
 
 //Michelle
@@ -65,18 +67,18 @@ User.hasMany(FollowChef, {
 
 
 // JianNan
-
-
-
-
-
-
-
-
-
-
-
-
+Recipe.belongsTo(User,{
+  foreignKey: 'userId',
+});
+RecipePic.belongsTo(Recipe,{
+  foreignKey:'recipeId',
+});
+RecipeRating.belongsTo(Recipe,{
+  foreignKey:'recipeId',
+});
+RecipeRating.belongsTo(User,{
+  foreignKey:'reviewerUserId',
+});
 //Michelle
 
 
@@ -104,6 +106,14 @@ User.hasMany(FollowChef, {
 
 
 // Manuspon
+
+
+
+
+
+
+
+// Manuspon
 PurchaseHistories.belongsTo(User, {
   foreignKey: "userId"
 })
@@ -116,11 +126,39 @@ Bookmark.belongsTo(User, {
 })
 
 
+//sync DataBase model to model set-up in app
 
+async function syncDatabase(){
+  await User.sync({alter:true}).then(()=>{
+    console.log(`user table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating user table:', err);
+  });
 
+  await FollowChef.sync({alter:true}).then(()=>{
+    console.log(`follow_chef table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating follow_chef table:', err);
+  });
 
+  await Recipe.sync({alter:true}).then(()=>{
+    console.log(`recipe table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe table:', err);
+  });
 
+  await RecipePic.sync({alter:true}).then(()=>{
+    console.log(`recipe_pic table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe_pic table:', err);
+  });
 
+  await RecipeRating.sync({alter:true}).then(()=>{
+    console.log(`recipe_rating table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe_rating table:', err);
+  });
+}
 
 
 // Exports (remember enhanced object literal)
@@ -130,7 +168,7 @@ module.exports = {
   User,
   FollowChef,
   PurchaseHistories,
-  Bookmark
+  Bookmark,
 
 
 
@@ -142,4 +180,5 @@ module.exports = {
 
 
   
+  syncDatabase
 };
