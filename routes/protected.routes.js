@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get("/protected", (req, res) => {
+router.get("/", (req, res) => {
     return res.send("You have called a protected route");
 });
 
@@ -10,8 +10,8 @@ router.get("/protected", (req, res) => {
 // Janice
 const UserController = require("../controller/user.controller")
 const userController = new UserController();
-router.get("/protected/user", userController.showAll);
-router.post("/protected/user", userController.register);
+router.get("/user", userController.showAll);
+router.post("/user", userController.register);
 
 
 
