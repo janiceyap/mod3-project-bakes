@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize("project_db", "postgres", "N3NL8bAxAghi", {
+const sequelize = new Sequelize("project-bake", "postgres", "psqlpw", {
   host: "localhost",
   dialect: "postgres",
 });
@@ -18,7 +18,9 @@ async function testConnection() {
     console.error("Unable to connect to the database:", error);
     return false;
   }
-}
+};
+
+
 
 // Import model(s)
 // Janice
@@ -115,21 +117,46 @@ RecipeRating.belongsTo(User,{
 
 
 
+//sync DataBase model to model set-up in app
+
+async function syncDatabase(){
+  await User.sync({alter:true}).then(()=>{
+    console.log(`user table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating user table:', err);
+  });
+
+  await FollowChef.sync({alter:true}).then(()=>{
+    console.log(`follow_chef table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating follow_chef table:', err);
+  });
+
+  await Recipe.sync({alter:true}).then(()=>{
+    console.log(`recipe table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe table:', err);
+  });
+
+  await RecipePic.sync({alter:true}).then(()=>{
+    console.log(`recipe_pic table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe_pic table:', err);
+  });
+
+  await RecipeRating.sync({alter:true}).then(()=>{
+    console.log(`recipe_rating table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe_rating table:', err);
+  });
+}
+
+
 // Exports (remember enhanced object literal)
 module.exports = {
   sequelize,
   testConnection,
   User,
-  FollowChef
-
-
-
-
-
-
-
-
-
-
-  
+  FollowChef,
+  syncDatabase
 };
