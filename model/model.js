@@ -34,9 +34,9 @@ const Driver = require("./driver")(sequelize);
 
 
 //Michelle
-
-
-
+const RecipeSteps = require('./recipesteps.model')(sequelize);
+const RecipeIngredients = require('./recipeingredients.model')(sequelize);
+const RecipeView = require('./recipeview.model')(sequelize);
 
 
 // Norman
@@ -63,6 +63,8 @@ Vehicle.belongsTo(Driver, {
 
 
 
+
+
 // JianNan
 
 
@@ -76,12 +78,19 @@ Vehicle.belongsTo(Driver, {
 
 
 
+
 //Michelle
+RecipeSteps.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
 
+RecipeIngredients.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
 
-
-
-
+RecipeView.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
 
 
 
