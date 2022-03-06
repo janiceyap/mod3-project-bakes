@@ -93,5 +93,13 @@ module.exports = {
         result.status = 200;
         result.message = `User ID ${userId} deleted successfully`;
         return result;
+    },
+
+    login: async (email, pwd) => {
+
+
+
+
+        
     }
 }
