@@ -54,7 +54,6 @@ module.exports = {
         return result;
     },
 
-
     showAll: async () => {
         let result = {
             message: null,
@@ -68,6 +67,31 @@ module.exports = {
         result.status = 200;   
         result.data = data;
 
+        return result;
+    },
+
+    deleteUser: async (userId) => {
+
+        // allow user to delete their own account via a delete button on the 
+        // user profile page. The account id (or primary key) would be available. 
+
+        let result = {
+            message: null,
+            status: null,
+            data: null
+        }
+
+        // Check if user is already registered in the system under email address.
+        const user = await User.findByPk(userId);
+        if (!user){
+            result.message = `User does not exist.`;
+            result.status = 404;
+            return result;
+        }
+
+        await user.destroy();
+        result.status = 200;
+        result.message = `User ID ${userId} deleted successfully`;
         return result;
     }
 }

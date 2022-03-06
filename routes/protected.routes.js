@@ -12,7 +12,7 @@ const UserController = require("../controller/user.controller")
 const userController = new UserController();
 router.get("/protected/user", userController.showAll);
 router.post("/protected/user", userController.register);
-
+router.delete("/protected/user", userController.deleteUser);
 
 
 
