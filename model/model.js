@@ -30,7 +30,7 @@ const FollowChef = require("./followchef.model")(sequelize);
 // JianNan
 const Recipe= require('./recipe.model')(sequelize);
 const RecipeRating = require('./recipeRating.model')(sequelize);
-const RecipePic = require('./recipePic.model')(sequlize);
+const RecipePic = require('./recipePic.model')(sequelize);
 
 
 //Michelle
