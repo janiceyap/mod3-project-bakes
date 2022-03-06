@@ -31,9 +31,15 @@ module.exports = function (sequelize){
             },
 
             difficultyLevel:{
-                type: DataTypes.ENUM('EASY', 'INTERMEDIATE', 'HARD'),
+                type: DataTypes.CHAR(15),
                 allowNull:false,
-                references: 'difficulty_level',
+                field: 'difficulty_level',
+                validate:{
+                    isIn: {
+                        args: [['EASY', 'INTERMEDIATE', 'HARD']],
+                        msg: 'Input must be "EASY", "INTERMEDIATE" or "HARD"'
+                      }
+                }
             },
 
             servings:{
