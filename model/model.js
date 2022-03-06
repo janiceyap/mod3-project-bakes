@@ -124,21 +124,52 @@ RecipeView.belongsTo(Recipe, {
 
 
 
+//sync DataBase model to model set-up in app
+
+async function syncDatabase(){
+  await User.sync({alter:true}).then(()=>{
+    console.log(`user table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating user table:', err);
+  });
+
+  await FollowChef.sync({alter:true}).then(()=>{
+    console.log(`follow_chef table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating follow_chef table:', err);
+  });
+
+  await Recipe.sync({alter:true}).then(()=>{
+    console.log(`recipe table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe table:', err);
+  });
+
+  await RecipePic.sync({alter:true}).then(()=>{
+    console.log(`recipe_pic table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe_pic table:', err);
+  });
+
+  await RecipeRating.sync({alter:true}).then(()=>{
+    console.log(`recipe_rating table successfully updated`);
+  }).catch(err=>{
+    console.log('Error updating recipe_rating table:', err);
+  });
+}
+
+
 // Exports (remember enhanced object literal)
 module.exports = {
   sequelize,
   testConnection,
-  Vehicle,
-  Driver
-
-
-
-
-
-
-
-
-
-
-  
+  User,
+  FollowChef,
+  syncDatabase,
+  Recipe,
+  RecipePic,
+  RecipeRating,
+  RecipeSteps,
+  RecipeIngredients,
+  RecipeView,
 };
