@@ -12,14 +12,14 @@ module.exports= function(sequelize){
         },
 
         pictureURL:{
-            type:DataTypes.CHAR(2048),
+            type:DataTypes.STRING(2048),
             unique:true,
             allowNull:false,
             field:'picture_url',
         },
 
         pictureDescr:{
-            type:DataTypes.CHAR(100),
+            type:DataTypes.STRING(100),
             allowNull: false,
             field:'picture_descr',
         },

@@ -1,5 +1,4 @@
-const { Op } = require('sequelize/types');
-const Recipe = require('../model/model');
+const {Recipe} = require('../model/model');
 const generalInfo = [
     'recipeId',
     'recipeName',
@@ -8,7 +7,7 @@ const generalInfo = [
     'description',
     'servings',
     'prepTimeInMin',
-    ' difficultyLevel',
+    'difficultyLevel',
     'createdAt',
     'updatedAt',
     'onSale'
@@ -16,7 +15,41 @@ const generalInfo = [
 ]
 
 const RecipeController = {
-    searchGeneralInfo:function(searchParams){
+
+    createNew: async function (data, user){
+
+        console.log(data);
+
+        const results = {
+            status: null,
+            message: null,
+            data: null,
+
+        };
+        try{
+            const recipe = await Recipe.create({
+                userId: user.id,
+                recipeName: data.recipeName,
+                description: data.description,
+                servings: data.servings,
+                prepTimeInMin: data.prepTimeInMin,
+                difficultyLevel: data.difficultyLevel.toUpperCase()
+            });
+
+            results.status=200;
+            results.message = `${recipe.recipeName} successfully created.`;
+            results.data = recipe;
+        } catch(err){
+            console.log(err);
+            results.status = 400;
+            results.message = err;
+        };
+        return results;
+
+    },
+
+
+    searchGeneralInfo:async function(searchParams){
         const filteringCriteria={};
 
         for (const [key, value] of Object.entries(searchParams)){
@@ -27,15 +60,13 @@ const RecipeController = {
             }
         }
 
-        let recipe = Recipe.findAll({
+        let recipe = await Recipe.findAll({
             where: filteringCriteria
         });
 
         return recipe;
 
-
-
-
-
     }
 }
+
+module.exports=RecipeController;
