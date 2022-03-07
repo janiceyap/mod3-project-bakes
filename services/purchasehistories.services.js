@@ -11,8 +11,7 @@ module.exports = {
         }
 
         const user = await User.findByPk(userId);
-        
-        const purchasesDetails = await PurchaseHistories.findAll( {where: { userId : userId }})
+        const purchasesDetails = await PurchaseHistories.findAll( {where: {userId : userId}} )
 
         console.log ("---Purchase Details---: ",purchasesDetails);
         if ( !purchasesDetails.length ) {
@@ -37,13 +36,16 @@ module.exports = {
         }
         try {
 
-            const checkPurchase = await PurchaseHistories.findByPk(purchaseId);
+            const checkPurchase = await PurchaseHistories.findAll( {where: {userId : newPurchaseDetails.userId} })
+            const checkRecipeId = await PurchaseHistories.findAll( {where: {recipeId : newPurchaseDetails.recipeId} })
 
-            if (checkPurchase.userId === newPurchaseDetails.userId && checkPurchase.recipeId === newPurchaseDetails.recipeId) {
+            if (checkPurchase.length !== 0 && checkRecipeId.length !== 0  ) {
                 result.status = 400;
                 result.message = `Customer has already purchased this recipe!`;
                 return result;
             }
+                let computeGST = newPurchaseDetails.subtotal*gst;
+                let computeTotal = newPurchaseDetails.subtotal + computeGST; 
 
             const newPurchase = await PurchaseHistories.create(
                 { 
@@ -51,8 +53,8 @@ module.exports = {
                     recipeId: newPurchaseDetails.recipeId,
                     purchaseDate: newPurchaseDetails.purchaseDate,
                     subtotal: newPurchaseDetails.subtotal,
-                    gst: newPurchaseDetails.gst,
-                    total: newPurchaseDetails.total,
+                    gst: computeGST,
+                    total: computeTotal,
                     paymentTxnId : newPurchaseDetails.paymentTxnId,
                     paymentMethod: newPurchaseDetails.paymentMethod,
                     invoiceId : newPurchaseDetails.invoiceId,
@@ -78,7 +80,6 @@ module.exports = {
             message: null,
             status: null,
             data: null,
-
         }
 
         const purchase = await PurchaseHistories.findByPk(purchaseId);
@@ -106,21 +107,20 @@ module.exports = {
         const purchase = await PurchaseHistories.findByPk(update.purchaseId);
 
         if (!purchase) {
-            result.message = `Purchase is not found. Purchase id`;
+            result.message = `Purchase is not found.`;
             result.status = 400;
             return result;
         }
 
-        //check duplicate purchase
-        if (purchase.userId === update.userId && purchase.recipeId === update.recipeId) {
+        //check duplicate purchase by same userId
+        if (purchase.userId.length !== 0 && purchase.recipeId.length !== 0) {
             result.status = 400;
             result.message = `Customer has already purchased this recipe!`;
             return result;
         }
 
-        //selective update
+        //selective update //postman may display many decimal place D.P, database will take in only 2 D.P
         try {
-
             if (update.userId) purchase.userId = update.userId;
             if (update.recipeId) purchase.recipeId = update.recipeId;
             if (update.purchaseDate) purchase.purchaseDate = update.purchaseDate;
@@ -128,14 +128,12 @@ module.exports = {
                 purchase.subtotal = update.subtotal;
                 purchase.gst = purchase.subtotal*gst;
                 purchase.total = purchase.subtotal + purchase.gst;
-                //postman may display many D.P, database only keep 2 decimal place
                 }   
-
             if (update.paymentTxnId) purchase.paymentTxnId = update.paymentTxnId;
             if (update.paymentMethod) purchase.paymentMethod = update.paymentMethod;
             if (update.invoiceId) purchase.invoiceId = update.invoiceId;
 
-            await purchase.save( { validate: true });
+            await purchase.save( { validate: true } );
 
         } catch(err) {
             console.log(err);

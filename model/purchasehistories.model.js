@@ -33,17 +33,26 @@ module.exports = function (sequelize) {
             subtotal: {
                 type: DataTypes.DECIMAL(10,2),
                 allowNull: false,
-                field: 'subtotal'
+                field: 'subtotal',
+                validate: {
+                    isNumeric: true,
+                }
             },
             gst: {
                 type: DataTypes.DECIMAL(10,2),
                 allowNull: false,
-                field: 'gst'
+                field: 'gst',
+                validate: {
+                    isNumeric: true,
+                }
             },
             total: {
                 type: DataTypes.DECIMAL(10,2),
                 allowNull: false,
-                field: 'total'
+                field: 'total',
+                validate: {
+                    isNumeric: true,
+                }
             },
             paymentMethod : {
                 type: DataTypes.STRING(100),
