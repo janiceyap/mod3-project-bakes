@@ -148,5 +148,122 @@ module.exports = {
         result.message = `Login Success!`;
         result.status = 200;
         return result;        
+    },
+
+    followUser: async (chefId, followerId) => {
+
+        let result = {
+            message: null,
+            status: null,
+            data: null
+        }
+
+        // check if chef and follow belong to user table.
+
+        const chef = await User.findByPk(chefId);
+        const follower = await User.findByPk(followerId);
+
+        if (!chef){
+            result.message = `Chef does not exist.`;
+            result.status = 404;
+            return result;
+        }
+
+        if (!follower){
+            result.message = `Follower does not exist.`;
+            result.status = 404;
+            return result;
+        }
+
+        // check if chef is already followed by follower in the followChef table.
+
+        const chefInTable = await FollowChef.findAll({
+            where: {
+                chefId : chefId,
+                followerId : followerId
+            },
+        });
+
+        if( chefInTable.length !== 0 ){
+            result.message = `Already followed.`;
+            result.status = 404;
+            return result;
+        }
+
+        // if everything is all good, create new item in followChef table and 
+        // edit the User table to increment noOfFollows.
+
+        const newFollow = await FollowChef.create(
+            {
+                chefId: chefId,
+                followerId: followerId
+            }
+        );
+
+        chef.noOfFollows = chef.noOfFollows + 1;
+        await chef.save();
+        
+        result.message = `Follow Completed Successfully!`;
+        result.status = 200;
+        result.data = chef;
+        return result;   
+    },
+
+    unfollowUser: async (chefId, followerId) => {
+
+        let result = {
+            message: null,
+            status: null,
+            data: null
+        }
+
+        // check if chef and follow belong to user table.
+
+        const chef = await User.findByPk(chefId);
+        const follower = await User.findByPk(followerId);
+
+        if (!chef){
+            result.message = `Chef does not exist.`;
+            result.status = 404;
+            return result;
+        }
+
+        if (!follower){
+            result.message = `Follower does not exist.`;
+            result.status = 404;
+            return result;
+        }
+
+        // check if chef is already followed by follower in the followChef table.
+
+        const chefInTable = await FollowChef.findAll({
+            where: {
+                chefId : chefId,
+                followerId: followerId
+            },
+        });
+
+        if( chefInTable.length === 0 ){
+            result.message = `User did not follow this chef yet.`;
+            result.status = 404;
+            return result;
+        }
+
+        console.log("ChefInTable", chefInTable);
+
+        // if everything is all good, delete item in followChef table and 
+        // edit the User table to decrease noOfFollows.
+
+        const toDelete = await FollowChef.findByPk(chefInTable[0].id);
+
+        await toDelete.destroy();
+
+        chef.noOfFollows = chef.noOfFollows - 1;
+        await chef.save();
+        
+        result.message = `Chef Unfollowed.`;
+        result.status = 200;
+        result.data = chef;
+        return result;   
     }
 };

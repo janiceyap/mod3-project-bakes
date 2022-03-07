@@ -15,8 +15,8 @@ const UserController = require("../controller/user.controller")
 const userController = new UserController();
 router.get("/user", jwtauthenticate.isAdmin, userController.showAll);
 router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
-
-
+router.post("/follow", userController.followUser);
+router.post("/unfollow", userController.unfollowUser);
 
 
 
