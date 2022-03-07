@@ -13,8 +13,8 @@ router.use(jwtauthenticate.isLoggedIn); // calling jwt verification for everyone
 // Janice
 const UserController = require("../controller/user.controller")
 const userController = new UserController();
-router.get("/user", userController.showAll);
-router.delete("/user", userController.deleteUser);
+router.get("/user", jwtauthenticate.isAdmin, userController.showAll);
+router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
 
 
 

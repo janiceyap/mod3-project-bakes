@@ -38,12 +38,12 @@ const RecipePic = require('./recipePic.model')(sequelize);
 //Michelle
 const RecipeSteps = require('./recipeSteps.model')(sequelize);
 const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
-const RecipeView = require('./recipeView.model')(sequelize);
+// const RecipeView = require('./recipeView.model')(sequelize);
 
 
 // Norman
-const RecipeTags = require('./recipeTags.model')(sequelize);
-const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
+// const RecipeTags = require('./recipeTags.model')(sequelize);
+// const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
 
 
 
@@ -93,12 +93,12 @@ RecipeRating.belongsTo(User,{
 
 
 // Norman
-RecipeTags.belongsto(Recipe,{
-  foreignKey: 'recipeId',
-});
-RecipeEquipment.belongsto(Recipe,{
-  foreignKey: 'recipeId',
-});
+// RecipeTags.belongsto(Recipe,{
+//   foreignKey: 'recipeId',
+// });
+// RecipeEquipment.belongsto(Recipe,{
+//   foreignKey: 'recipeId',
+// });
 
 
 
@@ -127,9 +127,9 @@ RecipeIngredients.belongsTo(Recipe, {
   foreignKey: 'recipeId',
 });
 
-RecipeView.belongsTo(Recipe, {
-  foreignKey: 'recipeId',
-});
+// RecipeView.belongsTo(Recipe, {
+//   foreignKey: 'recipeId',
+// });
 
 
 
@@ -227,5 +227,5 @@ module.exports = {
   RecipeRating,
   RecipeSteps,
   RecipeIngredients,
-  RecipeView
+  // RecipeView
 };
