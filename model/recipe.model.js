@@ -39,18 +39,27 @@ module.exports = function (sequelize){
                         args: [['EASY', 'INTERMEDIATE', 'HARD']],
                         msg: 'Input must be "EASY", "INTERMEDIATE" or "HARD"'
                       }
-                }
+                },
+                set(value){
+                    this.setDataValue('difficultyLevel', value.toUpperCase())
+                },
             },
 
             servings:{
-                type: DataTypes.STRING(20),
+                type: DataTypes.INTEGER,
                 allowNull:false,
+                set(value){
+                    this.setDataValue('servings', parseInt(value))
+                },
             },
 
             prepTimeInMin:{
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                field: 'recipe_time_in_minutes'
+                field: 'recipe_time_in_minutes',
+                set(value){
+                    this.setDataValue('prepTimeInMin', parseInt(value))
+                },
             },
 
             starRating:{
@@ -65,6 +74,27 @@ module.exports = function (sequelize){
                 allowNull:false,
                 defaultValue:false,
                 field:'on_sale',
+                set(value){
+                    if (value===true || value ===false){
+                        this.setDataValue('onSale', value);
+                    }else{
+                        switch(value.toLowerCase()){
+                            case("1"):
+                            case(1):
+                            case('true'):
+                                this.setDataValue('onSale',true);
+                                break;
+
+                            case("0"):
+                            case(0):
+                            case('false'):
+                                this.setDataValue('onSale',false);
+                                break;
+                            default:
+                                this.setDataValue('onSale',value);
+                        }
+                    }
+                },
             },
 
             createdAt:{
