@@ -1,4 +1,5 @@
 const {Recipe} = require('../model/model');
+const {Op} = require('sequelize');
 const generalInfo = [
     'recipeId',
     'recipeName',
@@ -53,12 +54,19 @@ const RecipeController = {
         const filteringCriteria={};
 
         for (const [key, value] of Object.entries(searchParams)){
-            if (key=== 'recipeName' || key==='description'){
-                filteringCriteria[key] = {[Op.iLike]:('%'+value+'%')}
+            if (key=== 'keyWord'){
+                filteringCriteria[Op.or] = [
+                    {'recipeName':{[Op.iLike]:'%'+value+'%'}},
+                    {'description':{[Op.iLike]:'%'+value+'%'}},
+                ]
             } else{
                 filteringCriteria[key] ={[Op.eq]:value}
             }
         }
+
+        filteringCriteria['onSale']= true;
+
+        console.log(filteringCriteria);
 
         let recipe = await Recipe.findAll({
             where: filteringCriteria
