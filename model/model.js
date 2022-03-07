@@ -42,8 +42,8 @@ const RecipePic = require('./recipePic.model')(sequelize);
 
 
 // Norman
-
-
+const RecipeTags = require('./recipeTags.model')(sequelize);
+const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
 
 
 
@@ -92,19 +92,19 @@ RecipeRating.belongsTo(User,{
 
 
 // Norman
+RecipeTags.belongsto(Recipe,{
+  foreignKey: 'recipeId',
+});
+RecipeEquipment.belongsto(Recipe,{
+  foreignKey: 'recipeId',
+});
 
 
 
 
 
 
-
-
-
-
-
-
-// Manuspon
+// Manuspon 107
 
 
 
