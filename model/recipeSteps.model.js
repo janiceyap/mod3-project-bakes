@@ -1,12 +1,12 @@
 const {DataTypes, Model} = require('sequelize');
 
 module.exports = function(sequelize) { 
-    class RecipeSteps extends Model {} //Why Model not green color? Need ; at the end of {}?
+    class RecipeSteps extends Model {};
 
     RecipeSteps.init(
-        { //Do i still need Id when I have stepsId and recipeId?
+        { 
             stepsId:{
-                type: DataTypes.INTEGER, //Cfm DataTypes is called?
+                type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
                 allowNull: false,
@@ -17,6 +17,18 @@ module.exports = function(sequelize) {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'recipe_id',
+            },
+
+            stepsNo:{
+                type: DataTypes.ARRAY,
+                allowNull: false,
+                field: 'steps_no',
+            },
+
+            features:{
+                type: DataTypes.ARRAY,
+                allowNull: false,
+                field: 'features',
             },
 
             createdAt:{
