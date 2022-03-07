@@ -30,7 +30,7 @@ module.exports= function(sequelize){
         },
 
         comments:{
-            type: DataTypes.CHAR(500),
+            type: DataTypes.STRING(500),
             allowNull: true,
         },
 

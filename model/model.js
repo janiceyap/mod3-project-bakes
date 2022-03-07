@@ -158,5 +158,8 @@ module.exports = {
   testConnection,
   User,
   FollowChef,
-  syncDatabase
+  syncDatabase,
+  Recipe,
+  RecipePic,
+  RecipeRating,
 };
