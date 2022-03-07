@@ -20,18 +20,18 @@ module.exports = function (sequelize){
             },
 
             recipeName:{
-                type: DataTypes.CHAR(100),
+                type: DataTypes.STRING(100),
                 allowNull:false,
                 field: 'recipe_name',
             },
 
             description:{
-                type: DataTypes.CHAR(500),
+                type: DataTypes.STRING(500),
                 allowNull:false,
             },
 
             difficultyLevel:{
-                type: DataTypes.CHAR(15),
+                type: DataTypes.STRING(15),
                 allowNull:false,
                 field: 'difficulty_level',
                 validate:{
@@ -43,7 +43,7 @@ module.exports = function (sequelize){
             },
 
             servings:{
-                type: DataTypes.CHAR(20),
+                type: DataTypes.STRING(20),
                 allowNull:false,
             },
 
