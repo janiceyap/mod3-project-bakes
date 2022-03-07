@@ -36,24 +36,33 @@ module.exports = {
             data: null,
         }
         try {
-        const newPurchase = await PurchaseHistories.create(
-            { 
-                userId: newPurchaseDetails.userId,
-                recipeId: newPurchaseDetails.recipeId,
-                purchaseDate: newPurchaseDetails.purchaseDate,
-                subtotal: newPurchaseDetails.subtotal,
-                gst: newPurchaseDetails.gst,
-                total: newPurchaseDetails.total,
-                paymentTxnId : newPurchaseDetails.paymentTxnId,
-                paymentMethod: newPurchaseDetails.paymentMethod,
-                invoiceId : newPurchaseDetails.invoiceId,
-            }
-        );
 
-        result.data = newPurchase;
-        result.status = 200;
-        result.message = `New Purchase created!`;
-        return result;
+            const checkPurchase = await PurchaseHistories.findByPk(purchaseId);
+
+            if (checkPurchase.userId === newPurchaseDetails.userId && checkPurchase.recipeId === newPurchaseDetails.recipeId) {
+                result.status = 400;
+                result.message = `Customer has already purchased this recipe!`;
+                return result;
+            }
+
+            const newPurchase = await PurchaseHistories.create(
+                { 
+                    userId: newPurchaseDetails.userId,
+                    recipeId: newPurchaseDetails.recipeId,
+                    purchaseDate: newPurchaseDetails.purchaseDate,
+                    subtotal: newPurchaseDetails.subtotal,
+                    gst: newPurchaseDetails.gst,
+                    total: newPurchaseDetails.total,
+                    paymentTxnId : newPurchaseDetails.paymentTxnId,
+                    paymentMethod: newPurchaseDetails.paymentMethod,
+                    invoiceId : newPurchaseDetails.invoiceId,
+                }
+            );
+
+            result.data = newPurchase;
+            result.status = 200;
+            result.message = `New Purchase created!`;
+            return result;
 
         } catch(err) {
             console.log(err);
@@ -99,6 +108,13 @@ module.exports = {
         if (!purchase) {
             result.message = `Purchase is not found. Purchase id`;
             result.status = 400;
+            return result;
+        }
+
+        //check duplicate purchase
+        if (purchase.userId === update.userId && purchase.recipeId === update.recipeId) {
+            result.status = 400;
+            result.message = `Customer has already purchased this recipe!`;
             return result;
         }
 
