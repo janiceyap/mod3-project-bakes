@@ -1,5 +1,4 @@
 const { PurchaseHistories, User } = require( "../model/model" );
-const { deleteUser } = require("./user.services");
 
 module.exports = {
 

@@ -1,4 +1,3 @@
-const { result } = require("lodash");
 const { Bookmark } = require("../model/model")
 
 
