@@ -1,4 +1,0 @@
-SALT_ROUNDS=10
-JWT_SECRET_KEY='youareawesome'
-DB_NAME='project-bake'
-DB_PASSWORD='psqlpw'
