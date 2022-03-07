@@ -1,4 +1,3 @@
-const { result } = require('lodash');
 const purchaseHistoriesService = require('../services/purchasehistories.services');
    
 class PurchaseHistoriesController {
