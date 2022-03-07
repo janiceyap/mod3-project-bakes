@@ -27,8 +27,8 @@ router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
 const RecipeController = require('../controller/recipe.controller');
 const recipeController = new RecipeController();
 router.post('/recipe',recipeController.createNew);
+router.put('/recipe/:recipeId', recipeController.updateRecipe);
 // router.get('/recipe/:recipeId', recipe.retrieveByID);
-// router.put('/recipe/:recipeId', recipeController.updateRecipe);
 // router.get('/recipe/:recipeId',recipeController.retrieveByID);
 // router.delete('/recipe/:recipeId',recipe.deleteByID);
 
