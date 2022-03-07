@@ -1,9 +1,9 @@
 // Import sequelize
 const { Sequelize } = require("sequelize");
-
+require('dotenv').config()
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize("lesson_db", "postgres", "N3NL8bAxAghi", {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: "localhost",
   dialect: "postgres",
 });
@@ -18,19 +18,21 @@ async function testConnection() {
     console.error("Unable to connect to the database:", error);
     return false;
   }
-}
+};
+
+
 
 // Import model(s)
 // Janice
-const Vehicle = require("./vehicle")(sequelize);
-const Driver = require("./driver")(sequelize);
+const User = require("./user.model")(sequelize);
+const FollowChef = require("./followchef.model")(sequelize);
 
 
 
 // JianNan
-
-
-
+const Recipe= require('./recipe.model')(sequelize);
+const RecipeRating = require('./recipeRating.model')(sequelize);
+const RecipePic = require('./recipePic.model')(sequelize);
 
 
 //Michelle
@@ -46,15 +48,20 @@ const RecipeView = require('./recipeView.model')(sequelize);
 
 
 // Manuspon
-
+const PurchaseHistories = require("./purchasehistories.model")(sequelize);
+const Bookmark = require("./bookmark.model")(sequelize);
 
 
 
 
 // Create associations
 // Janice
-Vehicle.belongsTo(Driver, {
-    foreignKey:"driverId"
+User.hasMany(FollowChef, {
+  foreignKey:"chefId",
+});
+
+User.hasMany(FollowChef, {
+  foreignKey:"followerId",
 });
 
 
@@ -66,6 +73,32 @@ Vehicle.belongsTo(Driver, {
 
 
 // JianNan
+Recipe.belongsTo(User,{
+  foreignKey: 'userId',
+});
+RecipePic.belongsTo(Recipe,{
+  foreignKey:'recipeId',
+});
+RecipeRating.belongsTo(Recipe,{
+  foreignKey:'recipeId',
+});
+RecipeRating.belongsTo(User,{
+  foreignKey:'reviewerUserId',
+});
+
+
+
+
+
+
+
+// Norman
+
+
+
+
+
+
 
 
 
@@ -98,22 +131,22 @@ RecipeView.belongsTo(Recipe, {
 
 
 
-// Norman
-
-
-
-
-
-
-
-
-
-
-
 
 // Manuspon
+PurchaseHistories.belongsTo(User, {
+  foreignKey: "userId"
+})
+// PurchaseHistories.hasMany(Receipe, {
+//   foreignKey: "recipeId"
+// })
 
+Bookmark.belongsTo(User, {
+  foreignKey: "userId"
+})
 
+// Bookmark.hasMany(Recipe, {
+//   foreignKey: "receipeId"
+// })
 
 
 
@@ -156,7 +189,22 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating recipe_rating table:', err);
   });
-}
+
+  await PurchaseHistories.sync({alter:true}).then(()=>{
+    console.log(`purchase_histories successful updated `)
+  }).catch(err=>{
+    console.log('Error updating purchase_histories table:', err)
+  })
+  
+  await Bookmark.sync({alter:true}).then(()=>{
+    console.log(`bookmark successful updated `)
+  }).catch(err=>{
+    console.log('Error updating bookmark table:', err)
+  })
+};
+
+
+
 
 
 // Exports (remember enhanced object literal)
@@ -165,11 +213,13 @@ module.exports = {
   testConnection,
   User,
   FollowChef,
+  PurchaseHistories,
+  Bookmark,
   syncDatabase,
   Recipe,
   RecipePic,
   RecipeRating,
   RecipeSteps,
   RecipeIngredients,
-  RecipeView,
+  RecipeView
 };
