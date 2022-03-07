@@ -24,10 +24,17 @@ router.get("/", (req, res) => {
 
 
 // JianNan
-
-
-
-
+const RecipeController= require('../controller/recipe.controller');
+const recipeController = new RecipeController();
+router.get('/recipe', recipeController.searchGeneralInfo); 
+//This endpoint accepts query with the following keys and searches the recipe database for the corresponding recipe on sale. At least 1 search term is required:
+// {
+    // keyWord: (search base on recipeName and description), (string)
+    // userId: (search base on seller's id) (int)
+    // recipe_id: (search base on recipe id), (int)
+    // servings: (search base on number of servings) (string),
+    // prepTimeInMin: (search base on prep time in mins) (int)
+// }
 
 
 
