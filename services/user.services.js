@@ -138,7 +138,8 @@ module.exports = {
 
         const loginData = {
             id: login[0].id,
-            email: login[0].email
+            email: login[0].email,
+            role: login[0].role
         };
 
         const token = jwt.sign(loginData, process.env.JWT_SECRET_KEY);
@@ -148,4 +149,4 @@ module.exports = {
         result.status = 200;
         return result;        
     }
-}
+};

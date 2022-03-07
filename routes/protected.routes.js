@@ -13,8 +13,8 @@ router.use(jwtauthenticate.isLoggedIn); // calling jwt verification for everyone
 // Janice
 const UserController = require("../controller/user.controller")
 const userController = new UserController();
-router.get("/user", userController.showAll);
-router.delete("/user", userController.deleteUser);
+router.get("/user", jwtauthenticate.isAdmin, userController.showAll);
+router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
 
 
 
@@ -79,7 +79,12 @@ router.put('/recipe/:recipeId', recipeController.updateRecipe);
 
 
 // Manuspon
-
+const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
+const purchaseHistoriesController = new PurchaseHistoriesController();
+router.get("/purchasehistories/user/:userId", purchaseHistoriesController.showAll);
+router.post("/purchasehistories", purchaseHistoriesController.newPurchase);
+router.put("/purchasehistories",purchaseHistoriesController.updatePurchase);
+router.delete("/purchasehistories/:purchaseId",purchaseHistoriesController.deletePurchase);
 
 
 

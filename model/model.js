@@ -36,19 +36,20 @@ const RecipePic = require('./recipePic.model')(sequelize);
 
 
 //Michelle
-
-
-
+const RecipeSteps = require('./recipeSteps.model')(sequelize);
+const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
+// const RecipeView = require('./recipeView.model')(sequelize);
 
 
 // Norman
-
-
+// const RecipeTags = require('./recipeTags.model')(sequelize);
+// const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
 
 
 
 // Manuspon
-
+const PurchaseHistories = require("./purchasehistories.model")(sequelize);
+const Bookmark = require("./bookmark.model")(sequelize);
 
 
 
@@ -65,6 +66,12 @@ User.hasMany(FollowChef, {
 
 
 
+
+
+
+
+
+
 // JianNan
 Recipe.belongsTo(User,{
   foreignKey: 'userId',
@@ -78,12 +85,6 @@ RecipeRating.belongsTo(Recipe,{
 RecipeRating.belongsTo(User,{
   foreignKey:'reviewerUserId',
 });
-//Michelle
-
-
-
-
-
 
 
 
@@ -92,10 +93,43 @@ RecipeRating.belongsTo(User,{
 
 
 // Norman
+// RecipeTags.belongsto(Recipe,{
+//   foreignKey: 'recipeId',
+// });
+// RecipeEquipment.belongsto(Recipe,{
+//   foreignKey: 'recipeId',
+// });
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Michelle
+RecipeSteps.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
+
+RecipeIngredients.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
+
+// RecipeView.belongsTo(Recipe, {
+//   foreignKey: 'recipeId',
+// });
 
 
 
@@ -105,8 +139,20 @@ RecipeRating.belongsTo(User,{
 
 
 // Manuspon
+PurchaseHistories.belongsTo(User, {
+  foreignKey: "userId"
+})
+// PurchaseHistories.hasMany(Receipe, {
+//   foreignKey: "recipeId"
+// })
 
+Bookmark.belongsTo(User, {
+  foreignKey: "userId"
+})
 
+// Bookmark.hasMany(Recipe, {
+//   foreignKey: "receipeId"
+// })
 
 
 
@@ -149,7 +195,22 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating recipe_rating table:', err);
   });
-}
+
+  await PurchaseHistories.sync({alter:true}).then(()=>{
+    console.log(`purchase_histories successful updated `)
+  }).catch(err=>{
+    console.log('Error updating purchase_histories table:', err)
+  })
+  
+  await Bookmark.sync({alter:true}).then(()=>{
+    console.log(`bookmark successful updated `)
+  }).catch(err=>{
+    console.log('Error updating bookmark table:', err)
+  })
+};
+
+
+
 
 
 // Exports (remember enhanced object literal)
@@ -158,8 +219,13 @@ module.exports = {
   testConnection,
   User,
   FollowChef,
+  PurchaseHistories,
+  Bookmark,
   syncDatabase,
   Recipe,
   RecipePic,
   RecipeRating,
+  RecipeSteps,
+  RecipeIngredients,
+  // RecipeView
 };
