@@ -34,6 +34,36 @@ module.exports = {
             next();
 
         });
-    }
+    },
 
+    canEditUser: async(req, res, next) => {
+
+        if(req.user.id != req.body.id && req.user.role != 'admin'){
+
+            res.status(401);
+
+            return res.json({
+                status_code: 401,
+                message: "Not Authorized to execute request."
+            });
+
+        }
+
+        next();
+    },
+
+    isAdmin: async(req, res, next) => {
+
+        if (req.user.role != 'admin'){
+
+            res.status(401);
+
+            return res.json({
+                status_code: 401,
+                message: "Only Adminstrators are allowed to view."
+            });
+        }
+
+        next();
+    }
 }
