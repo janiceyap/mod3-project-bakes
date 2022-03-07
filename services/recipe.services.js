@@ -1,5 +1,6 @@
-const {Recipe} = require('../model/model');
+const {Recipe,User} = require('../model/model');
 const {Op} = require('sequelize');
+const { valuesIn } = require('lodash');
 const generalInfo = [
     'recipeId',
     'recipeName',
@@ -12,8 +13,44 @@ const generalInfo = [
     'createdAt',
     'updatedAt',
     'onSale'
+];
 
+const intValues = [
+    'recipeId',
+    'user_id',
+    'maxPrepTimeInMin',
+    'minPrepTimeInMin',
+    'prepTimeInMin',
+    'minServings',
+    'maxServings',
+    'servings',
+];
+
+const floatValues = [
+    'maxStarRating',
+    'minStarRating',
+    'starRating',
+];
+
+const booleanValues = [
+    'onSale',
 ]
+
+const userAmendField=[
+    'recipeName',
+    'description',
+    'servings',
+    'prepTimeInMin',
+    'difficultyLevel',
+    'onSale',
+]
+const upperCaseValues = [
+    'difficultyLevel',
+    'maxDifficultyLevel',
+    'minDifficultyLevel',
+]
+
+
 
 const RecipeController = {
 
@@ -32,8 +69,8 @@ const RecipeController = {
                 userId: user.id,
                 recipeName: data.recipeName,
                 description: data.description,
-                servings: data.servings,
-                prepTimeInMin: data.prepTimeInMin,
+                servings: parseInt(data.servings),
+                prepTimeInMin: parseInt(data.prepTimeInMin),
                 difficultyLevel: data.difficultyLevel.toUpperCase()
             });
 
@@ -54,16 +91,69 @@ const RecipeController = {
         const filteringCriteria={};
 
         for (const [key, value] of Object.entries(searchParams)){
-            if (key=== 'keyWord'){
-                filteringCriteria[Op.or] = [
-                    {'recipeName':{[Op.iLike]:'%'+value+'%'}},
-                    {'description':{[Op.iLike]:'%'+value+'%'}},
-                ]
-            } else{
-                filteringCriteria[key] ={[Op.eq]:value}
-            }
-        }
 
+            switch(true){
+                case (key=== 'keyWord'):
+                    filteringCriteria[Op.or] = [
+                        {'recipeName':{[Op.iLike]:'%'+value+'%'}},
+                        {'description':{[Op.iLike]:'%'+value+'%'}},
+                    ];
+                    break;
+                
+                case (key==='maxPrepTimeInMin'):
+                    filteringCriteria['prepTimeInMin']={[Op.lte]:parseInt(value)};
+                    break;
+
+                case (key==='minPrepTimeInMin'):
+                    filteringCriteria['prepTimeInMin']={[Op.gte]:parseInt(value)};
+                    break;
+
+                case (key==='maxStarRating'):
+                    filteringCriteria['starRating']={[Op.lte]:parseFloat(value)};
+                    break;
+
+                case (key==='minStarRating'):
+                    filteringCriteria['starRating']={[Op.gte]:parseFloat(value)};
+                    break;
+
+                case (key==='maxServings'):
+                    filteringCriteria['servings']={[Op.lte]:parseInt(value)};
+                    break;
+
+                case (key==='minServings'):
+                    filteringCriteria['servings']={[Op.gte]:parseInt(value)};
+                    break;
+
+                case (key==='maxDifficultyLevel'):
+                    filteringCriteria['difficultyLevel']={[Op.lte]:value.toUpperCase()};
+                    break;
+
+                case (key==='minDifficultyLevel'):
+                    filteringCriteria['difficultyLevel']={[Op.gte]:value.toUpperCase()};
+                    break;
+                
+                case (!generalInfo.includes(key)):
+                    break;
+
+                case (intValues.includes(key)):
+                    filteringCriteria[key] ={[Op.eq]:parseInt(value)};
+                    break;
+
+                case (floatValues.includes(key)):
+                    filteringCriteria[key] ={[Op.eq]:parseFloat(value)};
+                    break;
+
+                case (upperCaseValues.includes(key)):
+                    filteringCriteria[key] ={[Op.eq]:value.toUpperCase};
+                    break;
+                default:
+                    filteringCriteria[key] ={[Op.eq]:value}
+                    break;
+
+            }
+        };
+
+                
         filteringCriteria['onSale']= true;
 
         console.log(filteringCriteria);
@@ -74,6 +164,83 @@ const RecipeController = {
 
         return recipe;
 
+    },
+
+
+    updateRecipe: async function(recipeId, data, user){
+
+        const result = {
+            status: null,
+            message: null,
+            data: null,
+        }
+
+        const recipe = await Recipe.findByPk(recipeId);
+
+        if(!recipe){
+            result.status=404;            
+            result.message ='Recipe ID not found';
+            return result;
+        };
+
+        if(recipe.userId===user.id){
+
+            for(let[key,value] of Object.entries(data)){
+
+                if (userAmendField.includes(key)){
+                    recipe[key] = value;
+                }
+
+            }
+
+            await recipe.save();
+            await recipe.reload();
+            result.status = 200;            
+            result.message =`Recipe ${recipe.recipeName} sucessfully updated`;
+            result.data = recipe;
+            return result;
+            
+
+
+
+        } else{
+            result.status=500;
+            result.message ='User not authorized to amend data for this recipe.';
+            return result;
+        }
+        
+    },
+
+    deleteRecipe: async function(recipeId, user){
+        const result = {
+            status: null,
+            message: null,
+            data: null,
+        }
+
+        const recipe = await Recipe.findByPk(recipeId);
+
+        if(!recipe){
+            result.status=404;            
+            result.message ='Recipe ID not found';
+            return result;
+        };
+
+        if(recipe.userId===user.id){
+
+            const recipeName = recipe.recipeName;
+
+            await recipe.destroy();
+            result.status = 200;            
+            result.message =`Recipe ${recipeName} sucessfully deleted`;
+            result.data = recipe;
+            return result;
+
+        } else{
+            result.status=401;
+            result.message ='User not authorized to delete this recipe.';
+            return result;
+        }
     }
 }
 

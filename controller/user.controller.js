@@ -52,6 +52,32 @@ class UserController {
             JWToken: result.jwt
         });
     }
+
+    async followUser(req, res, next){
+
+        const result = await userService.followUser(req.body.id, req.user.id);
+
+        res.status(result.status);
+
+        return res.json({
+            status_code: result.status,
+            message: result.message,
+            data: result.data
+        });
+    }
+
+    async unfollowUser(req, res, next){
+
+        const result = await userService.unfollowUser(req.body.id, req.user.id);
+
+        res.status(result.status);
+
+        return res.json({
+            status_code: result.status,
+            message: result.message,
+            data: result.data
+        });
+    }
 }
 
 module.exports = UserController;
