@@ -36,9 +36,9 @@ const RecipePic = require('./recipePic.model')(sequelize);
 
 
 //Michelle
-
-
-
+const RecipeSteps = require('./recipeSteps.model')(sequelize);
+const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
+const RecipeView = require('./recipeView.model')(sequelize);
 
 
 // Norman
@@ -66,6 +66,12 @@ User.hasMany(FollowChef, {
 
 
 
+
+
+
+
+
+
 // JianNan
 Recipe.belongsTo(User,{
   foreignKey: 'userId',
@@ -79,12 +85,6 @@ RecipeRating.belongsTo(Recipe,{
 RecipeRating.belongsTo(User,{
   foreignKey:'reviewerUserId',
 });
-//Michelle
-
-
-
-
-
 
 
 
@@ -97,6 +97,33 @@ RecipeRating.belongsTo(User,{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Michelle
+RecipeSteps.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
+
+RecipeIngredients.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
+
+RecipeView.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});
 
 
 
@@ -174,7 +201,7 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating bookmark table:', err)
   })
-}
+};
 
 
 
@@ -188,20 +215,11 @@ module.exports = {
   FollowChef,
   PurchaseHistories,
   Bookmark,
-
-
-
-
-
-
-
-
-
-
-  
-
   syncDatabase,
   Recipe,
   RecipePic,
   RecipeRating,
+  RecipeSteps,
+  RecipeIngredients,
+  RecipeView
 };

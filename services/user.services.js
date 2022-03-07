@@ -27,7 +27,7 @@ module.exports = {
 
         // Generate hashed password to store in database
         try {
-            passwordHash = bcrypt.hashSync(newUserDetails.pwd, saltRounds );
+            passwordHash = bcrypt.hashSync(newUserDetails.pwd, saltRounds);
         } catch(err){
             console.log(err);
             result.status = 500;
@@ -148,4 +148,4 @@ module.exports = {
         result.status = 200;
         return result;        
     }
-}
+};
