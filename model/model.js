@@ -34,9 +34,9 @@ const Driver = require("./driver")(sequelize);
 
 
 //Michelle
-const RecipeSteps = require('./recipesteps.model')(sequelize);
-const RecipeIngredients = require('./recipeingredients.model')(sequelize);
-const RecipeView = require('./recipeview.model')(sequelize);
+const RecipeSteps = require('./recipeSteps.model')(sequelize);
+const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
+const RecipeView = require('./recipeView.model')(sequelize);
 
 
 // Norman

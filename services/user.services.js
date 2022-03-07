@@ -148,4 +148,4 @@ module.exports = {
         result.status = 200;
         return result;        
     }
-}
+};
