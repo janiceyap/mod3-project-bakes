@@ -26,8 +26,10 @@ router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
 // JianNan
 const RecipeController = require('../controller/recipe.controller');
 const recipeController = new RecipeController();
-router.post('/recipe',recipeController.createNew);
-router.put('/recipe/:recipeId', recipeController.updateRecipe);
+router.post('/recipe',recipeController.createNew);// post new recipe with the following properties sent as json in body: recipeName(string), description(string), servings(int), prepTimeInMin(int), difficultyLevel(EASY, INTERMEDIATE or HARD) 
+router.put('/recipe/:recipeId', recipeController.updateRecipe); 
+// update recipe belonging to the recipe own. Accept following properties sents as json in body:  recipeName(string), description(string), servings(int), prepTimeInMin(int), difficultyLevel(EASY, INTERMEDIATE or HARD), onSale(boolean)
+router.delete('/recipe/:recipeId', recipeController.deleteRecipe); //delete recipeId belonging to the recipe owner only. Must include query ?confirm=true
 // router.get('/recipe/:recipeId', recipe.retrieveByID);
 // router.get('/recipe/:recipeId',recipeController.retrieveByID);
 // router.delete('/recipe/:recipeId',recipe.deleteByID);
