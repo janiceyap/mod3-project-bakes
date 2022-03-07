@@ -24,6 +24,11 @@ router.post("/user/login", userController.login);
 
 
 // JianNan
+const RecipeController = require('../controller/recipe.controller');
+const recipeController = new RecipeController();
+router.use(jwtauthenticate.isLoggedIn);
+router.post('/recipe',recipeController.createNew);
+// router.get('/recipe/:recipeId',recipe.retrieveByID);
 
 
 

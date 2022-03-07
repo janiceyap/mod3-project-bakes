@@ -180,5 +180,9 @@ module.exports = {
 
 
   
-  syncDatabase
+
+  syncDatabase,
+  Recipe,
+  RecipePic,
+  RecipeRating,
 };
