@@ -79,7 +79,12 @@ router.post('/recipe',recipeController.createNew);
 
 
 // Manuspon
-
+const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
+const purchaseHistoriesController = new PurchaseHistoriesController();
+router.get("/purchasehistories/user/:userId", purchaseHistoriesController.showAll);
+router.post("/purchasehistories", purchaseHistoriesController.newPurchase);
+router.put("/purchasehistories",purchaseHistoriesController.updatePurchase);
+router.delete("/purchasehistories/:purchaseId",purchaseHistoriesController.deletePurchase);
 
 
 
