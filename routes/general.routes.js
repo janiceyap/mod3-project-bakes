@@ -32,8 +32,10 @@ router.get('/recipe', recipeController.searchGeneralInfo);
     // keyWord: (search base on recipeName and description), (string)
     // userId: (search base on seller's id) (int)
     // recipe_id: (search base on recipe id), (int)
-    // servings: (search base on number of servings) (string),
-    // prepTimeInMin: (search base on prep time in mins) (int)
+    // servings / max / minServings: (search base on number of servings) (string),
+    // prepTimeInMin / max / minPrepTimeInMin: (search base on prep time in mins) (int)
+    // starRating / max / minStarRating: (search base on star rating) (float)
+    // difficultyLevel: (search base on difficulty level) (EASY/INTERMEDIATE/HARD)
 // }
 
 
