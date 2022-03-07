@@ -36,8 +36,6 @@ module.exports = {
             data: null,
         }
 
-        await Bookmark.sync();
-
         const newBookmarkData = await Bookmark.create(
             {
                 userId: newBookmarkDetails.userId,

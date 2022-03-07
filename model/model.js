@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 require('dotenv').config()
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize(process.env.DB_NAME, "postgres", process.env.DB_PASSWORD, {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: "localhost",
   dialect: "postgres",
 });
@@ -106,14 +106,6 @@ RecipeRating.belongsTo(User,{
 
 
 // Manuspon
-
-
-
-
-
-
-
-// Manuspon
 PurchaseHistories.belongsTo(User, {
   foreignKey: "userId"
 })
@@ -124,6 +116,14 @@ PurchaseHistories.belongsTo(User, {
 Bookmark.belongsTo(User, {
   foreignKey: "userId"
 })
+
+
+
+
+
+
+
+
 
 
 //sync DataBase model to model set-up in app
@@ -158,7 +158,22 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating recipe_rating table:', err);
   });
+
+  await PurchaseHistories.sync({alter:true}).then(()=>{
+    console.log(`purchase_histories successful updated `)
+  }).catch(err=>{
+    console.log('Error updating purchase_histories table:', err)
+  })
+  
+  await Bookmark.sync({alter:true}).then(()=>{
+    console.log(`bookmark successful updated `)
+  }).catch(err=>{
+    console.log('Error updating bookmark table:', err)
+  })
 }
+
+
+
 
 
 // Exports (remember enhanced object literal)

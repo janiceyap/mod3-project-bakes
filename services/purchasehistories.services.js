@@ -30,7 +30,6 @@ module.exports = {
 
     newPurchase: async (newPurchaseDetails) => {
 
-        await PurchaseHistories.sync();
         let result = {
             message: null,
             status: null,
