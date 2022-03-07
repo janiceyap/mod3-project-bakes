@@ -74,8 +74,10 @@ router.post("/user/login", userController.login);
 // Manuspon
 const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
 const purchaseHistoriesController = new PurchaseHistoriesController();
-router.get("/protected/purchasehistories", purchaseHistoriesController.showAll);
-router.post("/protected/purchasehistories", purchaseHistoriesController.newPurchase);
+router.get("/purchasehistories/user/:userId", jwtauthenticate.isLoggedIn,purchaseHistoriesController.showAll);
+router.post("/purchasehistories", jwtauthenticate.isLoggedIn,purchaseHistoriesController.newPurchase);
+router.put("/purchasehistories",jwtauthenticate.isLoggedIn,purchaseHistoriesController.updatePurchase);
+router.delete("/purchasehistories/:purchaseId",jwtauthenticate.isLoggedIn,purchaseHistoriesController.deletePurchase);
 
 
 

@@ -54,7 +54,7 @@ module.exports = function (sequelize) {
             invoiceId : {
                 type: DataTypes.STRING(100),
                 allowNull: false,
-                field: 'invoice_id'
+                field: 'invoice_id',
             },
             createdAt: {
                 type: DataTypes.DATE,
