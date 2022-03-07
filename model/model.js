@@ -117,6 +117,10 @@ Bookmark.belongsTo(User, {
   foreignKey: "userId"
 })
 
+// Bookmark.hasMany(Recipe, {
+//   foreignKey: "receipeId"
+// })
+
 
 
 
