@@ -26,26 +26,17 @@ class RecipeController {
         //     }))
         // };
 
-        try{
-            let recipe = await recipeService.searchGeneralInfo(req.query);
+        
+        let result = await recipeService.searchGeneralInfo(req.query);
 
-            res.status(200)
+        res.status(result.status)
 
-            return(res.json({
-                data: recipe
-            }))
-        } catch(err){
-
-            console.log(err);
-            res.status(500)
-
-            return(res.json({
-                message:err
-            }));
+        return(res.json({
+            message: result.message,
+            data: result.data,
+        }))
+       
         };
-
-
-    };
 
     async updateRecipe(req, res, next){
 
