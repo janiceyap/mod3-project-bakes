@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const userJoi = require("../middleware/user.joi");
 
 router.use("/", (req, res, next) => {
     console.log("You have called a general route.");
@@ -11,8 +12,7 @@ router.use("/", (req, res, next) => {
 const UserController = require("../controller/user.controller")
 const userController = new UserController();
 router.post("/user", userController.register);
-router.post("/user/login", userController.login);
-
+router.post("/user/login", userJoi.inputLogin, userController.login);
 
 
 
