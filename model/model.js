@@ -42,8 +42,8 @@ const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
 
 
 // Norman
-// const RecipeTags = require('./recipeTags.model')(sequelize);
-// const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
+const RecipeTags = require('./recipeTags.model')(sequelize);
+const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
 
 
 
@@ -93,12 +93,12 @@ RecipeRating.belongsTo(User,{
 
 
 // Norman
-// RecipeTags.belongsto(Recipe,{
-//   foreignKey: 'recipeId',
-// });
-// RecipeEquipment.belongsto(Recipe,{
-//   foreignKey: 'recipeId',
-// });
+RecipeTags.belongsTo(Recipe,{
+  foreignKey: 'recipeId',
+});
+RecipeEquipment.belongsTo(Recipe,{
+  foreignKey: 'recipeId',
+});
 
 
 

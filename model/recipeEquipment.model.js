@@ -6,18 +6,18 @@ module.exports = function (sequelize){
     RecipeEquipment.init(
         {
             id: {
-                type: Datatypes.INTERGER,
+                type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
                 field: 'equipment_id'
             },
             recipeId: {
-                type: Datatypes.INTERGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'recipe_id'
             },
             equipmentName: {
-                type: Datatypes.CHAR(50),
+                type: DataTypes.CHAR(50),
                 allowNull: false,
                 field: 'equipment_name'                
 
