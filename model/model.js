@@ -207,6 +207,12 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating bookmark table:', err)
   })
+
+  await RecipeSteps.sync({alter:true}).then(()=>{
+    console.log(`Recipe Steps successfully updated `)
+  }).catch(err=>{
+    console.log('Error updating recipe steps:', err)
+  })
 };
 
 

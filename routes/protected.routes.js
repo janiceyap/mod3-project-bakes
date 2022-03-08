@@ -49,12 +49,12 @@ router.delete('/recipe/:recipeId', recipeController.deleteRecipe); //delete reci
 
 
 // Michelle
-
-
-
-
-
-
+const RecipeStepsController = require('../controller/recipeSteps.controller');
+const recipeStepsController = new RecipeStepsController();
+router.get('/recipeSteps/:recipeId', recipeStepsController.showAll);
+router.post('/recipeSteps/:recipeId', recipeStepsController.newRecipeSteps);
+router.put('/recipe/:stepsId', recipeStepsController.updateRecipeSteps);
+router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
 
 
 

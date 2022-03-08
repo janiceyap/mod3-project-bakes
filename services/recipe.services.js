@@ -79,7 +79,7 @@ const RecipeController = {
             results.data = recipe;
         } catch(err){
             console.log(err);
-            results.status = 400;
+            results.status = 500;
             results.message = err;
         };
         return results;
