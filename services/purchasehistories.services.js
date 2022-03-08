@@ -10,21 +10,29 @@ module.exports = {
             data: null,
         }
 
+        try {
+
         const user = await User.findByPk(userId);
         const purchasesDetails = await PurchaseHistories.findAll( {where: {userId : userId}} )
 
-        console.log ("---Purchase Details---: ",purchasesDetails);
+        //console.log ("---Purchase Details---: ",purchasesDetails);
         if ( !purchasesDetails.length ) {
             result.message = `No purchase history found for user ${userId}`;
-            result.status = 404;
+            result.status = 400;
             return result; 
         } 
-        
+
         result.message = `Show all purchases from User ${userId} ${user.name}`
         result.status = 200;
         result.data = purchasesDetails;
 
         return result;
+
+        } catch(err) {
+            console.log(err);
+            result.message = err.message;
+            return result;
+        }
     },
 
     newPurchase: async (newPurchaseDetails) => {
@@ -36,10 +44,14 @@ module.exports = {
         }
         try {
 
-            const checkPurchase = await PurchaseHistories.findAll( {where: {userId : newPurchaseDetails.userId} })
-            const checkRecipeId = await PurchaseHistories.findAll( {where: {recipeId : newPurchaseDetails.recipeId} })
+            const findPurchase = await PurchaseHistories.findOne({
+                where: {
+                    userId : newPurchaseDetails.userId,
+                    recipeId : newPurchaseDetails.recipeId
+                }
+            })
 
-            if (checkPurchase.length !== 0 && checkRecipeId.length !== 0  ) {
+            if (findPurchase) {
                 result.status = 400;
                 result.message = `Customer has already purchased this recipe!`;
                 return result;
@@ -82,6 +94,7 @@ module.exports = {
             data: null,
         }
 
+        try {
         const purchase = await PurchaseHistories.findByPk(purchaseId);
 
         if (!purchase) {
@@ -95,6 +108,12 @@ module.exports = {
         result.status = 200;
         result.message = `Delete purchase ${purchaseId} successful!`;
         return result;
+
+        }catch(err) {
+            console.log(err);
+            result.message = err.message;
+            return result;
+        }
     },
 
     updatePurchase: async (update) => {
@@ -113,10 +132,18 @@ module.exports = {
         }
 
         //check duplicate purchase by same userId
-        if (purchase.userId.length !== 0 && purchase.recipeId.length !== 0) {
-            result.status = 400;
+        const findPurchase = await PurchaseHistories.findOne({
+            where: {
+                userId : update.userId,
+                recipeId : update.recipeId
+            }
+        })
+
+        if (findPurchase) {
             result.message = `Customer has already purchased this recipe!`;
+            result.status = 400;
             return result;
+
         }
 
         //selective update //postman may display many decimal place D.P, database will take in only 2 D.P
@@ -137,14 +164,14 @@ module.exports = {
 
         } catch(err) {
             console.log(err);
-            result.message = `Oops! Update for ${update.purchaseId} didn't go through, ${err}`;
+            result.message = `Oops! Update didn't go through, ${err}`;
             result.status = 400;
             return result;
         }
 
         result.data = purchase;
         result.status = 200;
-        result.message = `Update Purchase id: ${update.purchaseId} successful!`;
+        result.message = `Update Purchase successful!`;
         return result;
 
     }
