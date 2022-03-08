@@ -89,6 +89,12 @@ router.put("/purchasehistories",purchaseHistoriesController.updatePurchase);
 router.delete("/purchasehistories/:purchaseId",purchaseHistoriesController.deletePurchase);
 
 
+const BookmarkController = require("../controller/bookmark.controller");
+const bookmarkController = new BookmarkController();
+router.get("/bookmark/user/:userId", bookmarkController.showAll);
+router.post("/bookmark/user/:userId",bookmarkController.newBookmark);
+router.delete("/bookmark/user/:userId",bookmarkController.deleteBookmark);
+
 
 
 

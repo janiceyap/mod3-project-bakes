@@ -4,37 +4,39 @@ class PurchaseHistoriesController {
 
     async showAll(req, res, next) {
 
-        //console.log("Show User Purchases")
         const result = await purchaseHistoriesService.showAll(req.params.userId);
+
         res.status(result.status);
 
-        return res.json({data: result.data, message: result.message});
+        return res.json({message: result.message, data: result.data});
     }
 
     async newPurchase(req, res, next) {
 
-        //console.log("Purchase Histories Controller: Creating new data")
         const result = await purchaseHistoriesService.newPurchase(req.body);
 
         res.status(result.status);
 
-        return res.json({data: result.data, message: result.message});
+        return res.json({message: result.message, data: result.data});
     }
 
     async deletePurchase(req, res, next) {
     
         const result = await  purchaseHistoriesService.deletePurchase(req.params.purchaseId);
+
         res.status(result.status);
 
-        return res.json({data: result.data, message: result.message});
+        return res.json({message: result.message, data: result.data});
     }
 
     async updatePurchase(req, res, next) {
+        
         const result = await purchaseHistoriesService.updatePurchase(req.body);
-        res.status(result.status);
-        return res.json({data: result.data, message: result.message});
-    }
 
+        res.status(result.status);
+
+        return res.json({message: result.message, data: result.data});
+    }
 }
 
 module.exports = PurchaseHistoriesController;

@@ -15,10 +15,10 @@ module.exports = function (sequelize) {
                 allowNull: false,
                 field: 'user_id',
             },
-            receipeId: {
+            recipeId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                field: 'receipe_id',
+                field: 'recipe_id',
             },
             createdAt: {
                 type: DataTypes.DATE,
