@@ -8,9 +8,27 @@ module.exports = function(sequelize) {
             ingredientId:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
-                autoIncrement: true, //Shld this be true or removed?
+                autoIncrement: true,
                 allowNull: false,
                 field: 'ingredient_id',
+            },
+
+            recipeId:{
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                field: 'recipe_id',
+            },
+
+            quantity:{
+                type: DataTypes.FLOAT,
+                allowNull: false,
+                field: 'quantity',
+            },
+
+            units:{
+                type: DataTypes.STRING(20),
+                allowNull: false,
+                field: 'units',
             },
 
             createdAt:{
