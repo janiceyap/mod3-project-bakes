@@ -178,7 +178,7 @@ const RecipeController = {
         const recipe = await Recipe.findByPk(recipeId);
 
         if(!recipe){
-            result.status(404);            
+            result.status=404;            
             result.message ='Recipe ID not found';
             return result;
         };
@@ -196,7 +196,7 @@ const RecipeController = {
             await recipe.save();
             await recipe.reload();
             result.status = 200;            
-            result.message =`Recipe ${recipe.name} sucessfully updated`;
+            result.message =`Recipe ${recipe.recipeName} sucessfully updated`;
             result.data = recipe;
             return result;
             
@@ -208,10 +208,39 @@ const RecipeController = {
             result.message ='User not authorized to amend data for this recipe.';
             return result;
         }
-
-
         
-        
+    },
+
+    deleteRecipe: async function(recipeId, user){
+        const result = {
+            status: null,
+            message: null,
+            data: null,
+        }
+
+        const recipe = await Recipe.findByPk(recipeId);
+
+        if(!recipe){
+            result.status=404;            
+            result.message ='Recipe ID not found';
+            return result;
+        };
+
+        if(recipe.userId===user.id){
+
+            const recipeName = recipe.recipeName;
+
+            await recipe.destroy();
+            result.status = 200;            
+            result.message =`Recipe ${recipeName} sucessfully deleted`;
+            result.data = recipe;
+            return result;
+
+        } else{
+            result.status=401;
+            result.message ='User not authorized to delete this recipe.';
+            return result;
+        }
     }
 }
 
