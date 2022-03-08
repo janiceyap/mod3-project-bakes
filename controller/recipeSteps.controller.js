@@ -12,7 +12,7 @@ class RecipeStepsController {
 
     async newRecipeSteps(req, res, next){
 
-        const result = await recipeStepsService.newRecipeSteps(req.body);
+        const result = await recipeStepsService.newRecipeSteps(req.params.recipeId, req.body.stepsNo);
 
         res.status(result.status);
 
@@ -33,7 +33,7 @@ class RecipeStepsController {
         const result = await recipeStepsService.updateRecipeSteps(req.body);
 
         res.status(result.status);
-        
+
         return res.json({data: result.data, message: result.message});
     }
 };

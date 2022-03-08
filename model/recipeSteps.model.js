@@ -20,14 +20,14 @@ module.exports = function(sequelize) {
             },
 
             stepsNo:{
-                type: DataTypes.ARRAY,
+                type: DataTypes.ARRAY(DataTypes.STRING),
                 allowNull: false,
                 field: 'steps_no',
             },
 
             features:{
-                type: DataTypes.ARRAY,
-                allowNull: false,
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: true,
                 field: 'features',
             },
 

@@ -27,7 +27,7 @@ module.exports = {
         return result;
     },
 
-    newRecipeSteps: async (newRecipeSteps) => {
+    newRecipeSteps: async (recipeId, newRecipeSteps) => {
 
         let result = {
             message: null,
@@ -36,12 +36,13 @@ module.exports = {
         }
 
         try {
-            const newRecipeSteps = await RecipeSteps.create(
+            const newSteps = await RecipeSteps.create(
                 {
-                    recipeSteps: newRecipeSteps.recipeId,
+                    recipeId: recipeId,
+                    stepsNo: newRecipeSteps,
                 }
             );
-            result.data = newRecipeSteps;
+            result.data = newSteps;
             result.status = 200;
             result.message = `New recipe steps created.`;
             return result;
