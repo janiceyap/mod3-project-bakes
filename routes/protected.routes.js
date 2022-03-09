@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwtauthenticate = require("../middleware/jwtauthenticate");
+const purchaseHistJoi = require("../middleware/purchasehistories.joi.js")
 
 router.use("/", (req, res, next) => {
     console.log("You have called a protected route.");
@@ -84,10 +85,16 @@ router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
 const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
 const purchaseHistoriesController = new PurchaseHistoriesController();
 router.get("/purchasehistories/user/:userId", purchaseHistoriesController.showAll);
-router.post("/purchasehistories", purchaseHistoriesController.newPurchase);
-router.put("/purchasehistories",purchaseHistoriesController.updatePurchase);
+router.post("/purchasehistories", purchaseHistJoi.verifyPurchase,purchaseHistoriesController.newPurchase);
+router.put("/purchasehistories", purchaseHistoriesController.updatePurchase);
 router.delete("/purchasehistories/:purchaseId",purchaseHistoriesController.deletePurchase);
 
+
+const BookmarkController = require("../controller/bookmark.controller");
+const bookmarkController = new BookmarkController();
+router.get("/bookmark/user/:userId", bookmarkController.showAll);
+router.post("/bookmark/user/:userId",bookmarkController.newBookmark);
+router.delete("/bookmark/user/:userId",bookmarkController.deleteBookmark);
 
 
 

@@ -4,26 +4,30 @@ class bookmarkController {
 
     async showAll(req, res, next) {
 
-        console.log("Showing all bookmarks")
+        const result = await bookmarkService.showAll(req.params.userId);
 
-        const result = await bookmarkService.showAll(req.body);
         res.status(result.status);
 
-        return res.json({data: result.data, message: result.message});
+        return res.json({message: result.message, data: result.data});
     }
 
     async newBookmark(req, res, next) {
 
-        console.log("Creating new bookmark")
-        const result = await bookmarkService.newBookmark(req.body);
+        const result = await bookmarkService.newBookmark(req.params.userId,req.body.recipeId);
 
         res.status(result.status);
 
-        return res.json({data: result.data, message: result.message});
-
-
+        return res.json({message: result.message, data: result.data});
     }
+    
+    async deleteBookmark (req, res, next) {
 
+        const result = await bookmarkService.deleteBookmark(req.params.userId,req.body.recipeId); 
+
+        res.status(result.status);
+
+        return res.json({message: result.message, data: result.data});
+    }
 }
 
 module.exports = bookmarkController;
