@@ -14,7 +14,7 @@ module.exports = {
         let result = {
             message: null,
             status: null,
-            data: null
+            data: null,
         }
 
         // Check if user is already registered in the system under email address.
