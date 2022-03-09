@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const jwtauthenticate = require("../middleware/jwtauthenticate");
-const purchaseHistJoi = require("../middleware/purchasehistories.joi.js")
+const purchaseHistJoi = require("../middleware/purchasehistories.joi.js");
+
 
 router.use("/", (req, res, next) => {
     console.log("You have called a protected route.");
@@ -66,22 +67,23 @@ router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
 
 
 // Norman
+const RecipeTagsController = require('../controller/recipeTags.controller');
+const recipeTagsController =new RecipeTagsController();
+const recipeTagsJoi = require('../middleware/recipetags.joi')
+router.post('/recipetags/:recipeId', recipeTagsJoi.inputTags,recipeTagsController.newRecipeTags); // create new tag
+router.delete('/recipetags/:tagsId', recipeTagsController.deleteRecipeTags); //Delete Tags from Recipe
+
+
+
+
+ 
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-// Manuspon
+// Manuspon 83
 const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
 const purchaseHistoriesController = new PurchaseHistoriesController();
 router.get("/purchasehistories/user/:userId", purchaseHistoriesController.showAll);

@@ -42,8 +42,8 @@ const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
 
 
 // Norman
-// const RecipeTags = require('./recipeTags.model')(sequelize);
-// const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
+const RecipeTags = require('./recipeTags.model')(sequelize);
+const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
 
 
 
@@ -93,12 +93,12 @@ RecipeRating.belongsTo(User,{
 
 
 // Norman
-// RecipeTags.belongsto(Recipe,{
-//   foreignKey: 'recipeId',
-// });
-// RecipeEquipment.belongsto(Recipe,{
-//   foreignKey: 'recipeId',
-// });
+RecipeTags.belongsTo(Recipe,{
+  foreignKey: 'recipeId',
+});
+RecipeEquipment.belongsTo(Recipe,{
+  foreignKey: 'recipeId',
+});
 
 
 
@@ -213,6 +213,12 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating recipe steps:', err)
   })
+
+  await RecipeTags.sync({alter:true}).then(()=>{
+    console.log(`Recipe Tags successfully updated `)
+  }).catch(err=>{
+    console.log('Error updating recipe steps:', err)
+  })
 };
 
 
@@ -233,5 +239,6 @@ module.exports = {
   RecipeRating,
   RecipeSteps,
   RecipeIngredients,
+  RecipeTags
   // RecipeView
 };
