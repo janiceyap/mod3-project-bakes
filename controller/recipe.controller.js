@@ -40,7 +40,7 @@ class RecipeController {
 
     async updateRecipe(req, res, next){
 
-        console.log(`Updating recipe ${req.params.recipe.Id} with`, req.body);
+        console.log(`Updating recipe ${req.params.recipeId} with`, req.body);
 
         if(Object.entries(req.body).length === 0|| !req.params.recipeId){
             res.status(400);
