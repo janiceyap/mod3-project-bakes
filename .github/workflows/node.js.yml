@@ -10,6 +10,7 @@ on:
     - janice
     - jianNan
     - mcho
+    - michelle
     
   pull_request:
     branches: 
@@ -17,6 +18,7 @@ on:
     - janice
     - jianNan
     - mcho
+    - michelle
 
 jobs:
   build:
