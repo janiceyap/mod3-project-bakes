@@ -1,4 +1,3 @@
-const { user } = require("pg/lib/defaults");
 const { Bookmark, Recipe } = require("../model/model")
 
 
@@ -65,7 +64,7 @@ module.exports = {
                 recipeId : recipeId,
             }
         );
-
+        console.log("--newBookmarkData--",newBookmarkData);
         const recipeDetails = await Recipe.findByPk(recipeId);
 
         result.data = recipeDetails;
