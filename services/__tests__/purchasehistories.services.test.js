@@ -19,5 +19,5 @@ describe (`Test for Purchase Histories`, () => {
         const result = await testCode.deletePurchase(data);
         expect(PurchaseHistories.findByPk).toBeCalled();
     })
-//extra comment
+//extra comment // very extra comment
 })
