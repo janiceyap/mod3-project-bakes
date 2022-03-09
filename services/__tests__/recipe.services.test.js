@@ -1,6 +1,7 @@
 let { Recipe } = require('../../model/model');
 const testCode = require('../recipe.services');
 let {Op} = require('sequelize');
+const { user } = require('pg/lib/defaults');
 
 afterEach(()=>{
     jest.clearAllMocks();
@@ -79,6 +80,7 @@ describe(`Test for searchGeneralInfo Method`,()=>{
         Op.lte = jest.fn();
         Op.eq = jest.fn();
         Op.or = jest.fn();
+        Op.and = jest.fn();
     })
 
 
@@ -88,11 +90,13 @@ describe(`Test for searchGeneralInfo Method`,()=>{
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                [Op.or]:[
-                    {'recipeName':{[Op.iLike]:'%Chicken%'}},
-                    {'description':{[Op.iLike]:'%Chicken%'}}
-                ],
-                onSale:true,
+                [Op.and]:[
+                    {[Op.or]:[
+                        {'recipeName':{[Op.iLike]:'%Chicken%'}},
+                        {'description':{[Op.iLike]:'%Chicken%'}}
+                    ]},
+                   { onSale:true}
+                ]
             }
         });
 
@@ -104,25 +108,29 @@ describe(`Test for searchGeneralInfo Method`,()=>{
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                prepTimeInMin:{[Op.lte]:60},
-                prepTimeInMin:{[Op.gte]:30},
-                prepTimeInMin:{[Op.eq]:45},
-                onSale:true,
+                [Op.and]:[
+                    {prepTimeInMin:{[Op.lte]:60}},
+                    {prepTimeInMin:{[Op.gte]:30}},
+                    {prepTimeInMin:{[Op.eq]:45}},
+                    {onSale:true}
+                ] 
             }});
 
     });
 
     
-    test("Test 3: It should search based on starRating, min and max, when providedin the search params ", async ()=>{
+    test("Test 3: It should search based on starRating, min and max, when provided in the search params ", async ()=>{
 
         const results = await testCode.searchGeneralInfo({maxStarRating:'5', minStarRating:'1', starRating:4});
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                starRating:{[Op.lte]:5},
-                starRating:{[Op.gte]:1},
-                starRating:{[Op.eq]:4},
-                onSale:true,
+                [Op.and]:[
+                    {starRating:{[Op.lte]:5}},
+                    {starRating:{[Op.gte]:1}},
+                    {starRating:{[Op.eq]:4}},
+                    {onSale:true},
+                ]
             }});
 
     });
@@ -133,10 +141,12 @@ describe(`Test for searchGeneralInfo Method`,()=>{
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                servings:{[Op.lte]:10},
-                servings:{[Op.gte]:5},
-                servings:{[Op.eq]:8},
-                onSale:true,
+                [Op.and]:[
+                    {servings:{[Op.lte]:10}},
+                    {servings:{[Op.gte]:5}},
+                    {servings:{[Op.eq]:8}},
+                    {onSale:true},
+                ]
             }});
 
     });
@@ -147,20 +157,24 @@ describe(`Test for searchGeneralInfo Method`,()=>{
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                difficultyLevel:{[Op.eq]:'EASY'},
-                onSale:true,
+                [Op.and]:[
+                    {difficultyLevel:{[Op.eq]:'EASY'}},
+                    {onSale:true},
+                ]
             }});
 
     });
 
     test("Test 6: It should search based on recipeId when provided in the search params ", async ()=>{
 
-        const results = await testCode.searchGeneralInfo({difficultyLevel:'easy'});
+        const results = await testCode.searchGeneralInfo({recipeId:'1'});
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                difficultyLevel:{[Op.eq]:'EASY'},
-                onSale:true,
+                [Op.and]:[
+                    {recipeId:{[Op.eq]:1}},
+                    {onSale:true},
+                ]
             }});
 
     });
@@ -171,35 +185,74 @@ describe(`Test for searchGeneralInfo Method`,()=>{
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                userId:{[Op.eq]:3},
-                onSale:true,
+                [Op.and]:[
+                    {userId:{[Op.eq]:3}},
+                    {onSale:true},
+                ]
             }});
 
     });
 
-    test("Test 8: It should search with onSale=true even when provided onSale=false in the search params ", async ()=>{;
+    test("Test 8: If user is not verified it should search with onSale=true even when provided onSale=false in the search params ", async ()=>{;
 
-        const results = await testCode.searchGeneralInfo({onSale:false});
+        const results = await testCode.searchGeneralInfo({onSale:'false'});
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                onSale:true,
+                [Op.and]:[
+                    {onSale:true},
+                ]
             }});
 
     });
 
-    test("Test 9: It should not include random key values, not in the recipe table's column name, in the search function.", async ()=>{;
+    test("Test 9: If user is verified searching with onSale=false must be accompanied by userId = user.Id ", async ()=>{;
+
+        const results = await testCode.searchGeneralInfo({'onSale':'false'}, {id:2, email:'test@testservices.com', role:'user'});
+
+        expect(Recipe.findAll).toBeCalledWith({
+            where:{
+                [Op.and]:[
+                    {[Op.and]: [{onSale:false},{userId:2}]}
+                ]
+            }});
+
+    });
+
+    test("Test 10: If user is verified searching without onSale params will search with onSale=true or (onSale=true and userId=user.Id", async ()=>{;
+
+        const results = await testCode.searchGeneralInfo({}, {id:2, email:'test@testservices.com', role:'user'});
+
+        expect(Recipe.findAll).toBeCalledWith({
+            where:{
+                [Op.and]:[
+                    {[Op.or]:[
+                        {onSale:true},
+                        {[Op.and]: [
+                            {onSale:false},
+                            {userId:2},
+                        ]}
+                    ]}
+                ]
+            }});
+
+    });
+
+
+    test("Test 11: It should not include random key values, not in the recipe table's column name, in the search function.", async ()=>{;
 
         const results = await testCode.searchGeneralInfo({randomKey:6});
 
         expect(Recipe.findAll).toBeCalledWith({
             where:{
-                onSale:true,
+                [Op.and]:[
+                    {onSale:true},
+                ]
             }});
 
     });
 
-    test("Test 10: It should return an object with status property = 200 if search is performed", async ()=>{
+    test("Test 12: It should return an object with status property = 200 if search is performed", async ()=>{
 
         Recipe.findAll = jest.fn().mockResolvedValue({
             recipeId:3,
@@ -219,7 +272,7 @@ describe(`Test for searchGeneralInfo Method`,()=>{
 
     });
 
-    test("Test 11: It should return an object with status property = 500 if search fails", async ()=>{;
+    test("Test 13: It should return an object with status property = 500 if search fails", async ()=>{;
 
         Recipe.findAll = jest.fn().mockRejectedValue(new Error('Database error'));
 
