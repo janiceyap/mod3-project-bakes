@@ -12,7 +12,7 @@ module.exports = {
                 .min(50)
                 .max(200)
                 .required(),
-        })
+        });
 
         const {error, value} = stepsSchema.validate(req.body);
         // stepsSchema.validate({});
