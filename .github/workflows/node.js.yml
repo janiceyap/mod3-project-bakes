@@ -5,9 +5,20 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+    - janice
+    - jianNan
+    - mcho
+    - michelle
+    - norman
+    
   pull_request:
-    branches: [ main ]
+    branches: 
+    - janice
+    - jianNan
+    - mcho
+    - michelle
+    - norman
 
 jobs:
   build:
@@ -29,3 +40,23 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+    
+    
+  release:
+    if: ${{needs.build.result == 'success'}}
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Branch Merge
+      uses: everlytic/branch-merge@1.1.2
+      with:
+        source_ref: ${{ github.ref }}
+        target_branch: main
+        commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'
