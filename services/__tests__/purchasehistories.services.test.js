@@ -27,7 +27,7 @@ describe (`Test for Purchase Histories`, () => {
     test(`Test 3: It should return status 400 if new creation fail`, async() => {
         PurchaseHistories.create = jest.fn().mockRejectedValue(new Error('Error'));
         const result = await testCode.newPurchase(data);
-        expect(result.status).toBe(400); 
+        expect(result.status).toBe(500); 
     })
 
 })
