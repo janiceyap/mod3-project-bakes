@@ -16,6 +16,28 @@ class RecipeController {
 
     };
 
+    async searchGeneralInfoP(req, res, next){
+        console.log(`Searching recipe with search terms`, req.query);
+
+        // if(Object.keys(req.query).length===0){
+        //     res.status(400);
+        //     return(res.json({
+        //         message: 'Please provide a search parameter',
+        //     }))
+        // };
+
+        
+        let result = await recipeService.searchGeneralInfo(req.query, req.user);
+
+        res.status(result.status)
+
+        return(res.json({
+            message: result.message,
+            data: result.data,
+        }))
+       
+    };
+
     async searchGeneralInfo(req, res, next){
         console.log(`Searching recipe with search terms`, req.query);
 
@@ -36,7 +58,7 @@ class RecipeController {
             data: result.data,
         }))
        
-        };
+    };
 
     async updateRecipe(req, res, next){
 

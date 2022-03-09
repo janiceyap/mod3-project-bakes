@@ -87,7 +87,7 @@ const RecipeController = {
     },
 
 
-    searchGeneralInfo:async function(searchParams){
+    searchGeneralInfo:async function(searchParams, user){
 
         const results = {
             status: null,
@@ -98,71 +98,94 @@ const RecipeController = {
 
         const filteringCriteria={};
 
+        filteringCriteria[Op.and]=[];
+
         for (const [key, value] of Object.entries(searchParams)){
+
+            let individualCriteria = {}
 
             switch(true){
                 case (key=== 'keyWord'):
-                    filteringCriteria[Op.or] = [
+                    individualCriteria[Op.or] = [
                         {'recipeName':{[Op.iLike]:'%'+value+'%'}},
                         {'description':{[Op.iLike]:'%'+value+'%'}},
                     ];
                     break;
                 
                 case (key==='maxPrepTimeInMin'):
-                    filteringCriteria['prepTimeInMin']={[Op.lte]:parseInt(value)};
+                    individualCriteria['prepTimeInMin']={[Op.lte]:parseInt(value)};
                     break;
 
                 case (key==='minPrepTimeInMin'):
-                    filteringCriteria['prepTimeInMin']={[Op.gte]:parseInt(value)};
+                    individualCriteria['prepTimeInMin']={[Op.gte]:parseInt(value)};
                     break;
 
                 case (key==='maxStarRating'):
-                    filteringCriteria['starRating']={[Op.lte]:parseFloat(value)};
+                    individualCriteria['starRating']={[Op.lte]:parseFloat(value)};
                     break;
 
                 case (key==='minStarRating'):
-                    filteringCriteria['starRating']={[Op.gte]:parseFloat(value)};
+                    individualCriteria['starRating']={[Op.gte]:parseFloat(value)};
                     break;
 
                 case (key==='maxServings'):
-                    filteringCriteria['servings']={[Op.lte]:parseInt(value)};
+                    individualCriteria['servings']={[Op.lte]:parseInt(value)};
                     break;
 
                 case (key==='minServings'):
-                    filteringCriteria['servings']={[Op.gte]:parseInt(value)};
+                    individualCriteria['servings']={[Op.gte]:parseInt(value)};
                     break;
 
                 case (key==='maxDifficultyLevel'):
-                    filteringCriteria['difficultyLevel']={[Op.lte]:value.toUpperCase()};
+                    individualCriteria['difficultyLevel']={[Op.lte]:value.toUpperCase()};
                     break;
 
                 case (key==='minDifficultyLevel'):
-                    filteringCriteria['difficultyLevel']={[Op.gte]:value.toUpperCase()};
+                    individualCriteria['difficultyLevel']={[Op.gte]:value.toUpperCase()};
+                    break;
+
+                case (key==='onSale'):
                     break;
                 
                 case (!generalInfo.includes(key)):
                     break;
 
                 case (intValues.includes(key)):
-                    filteringCriteria[key] ={[Op.eq]:parseInt(value)};
+                    individualCriteria[key] ={[Op.eq]:parseInt(value)};
                     break;
 
                 case (floatValues.includes(key)):
-                    filteringCriteria[key] ={[Op.eq]:parseFloat(value)};
+                    individualCriteria[key] ={[Op.eq]:parseFloat(value)};
                     break;
 
                 case (upperCaseValues.includes(key)):
-                    filteringCriteria[key] ={[Op.eq]:value.toUpperCase()};
+                    individualCriteria[key] ={[Op.eq]:value.toUpperCase()};
                     break;
                 default:
-                    filteringCriteria[key] ={[Op.eq]:value}
+                    individualCriteria[key] ={[Op.eq]:value}
                     break;
 
+            };
+
+            if(Object.entries(individualCriteria).length!==0){
+
+                filteringCriteria[Op.and].push(individualCriteria);
             }
         };
 
-                
-        filteringCriteria['onSale']= true;
+        if(!user || (Object.keys(searchParams).includes('onSale')&&searchParams['onSale']==='true')){
+            filteringCriteria[Op.and].push(
+                {onSale:true}
+                );
+        }else if(user && (Object.keys(searchParams).includes('onSale')&&searchParams['onSale']==='false')){
+            filteringCriteria[Op.and].push(
+                {[Op.and]:[{onSale:false}, {userId:user.id}]}
+            );
+        } else if (user){
+            filteringCriteria[Op.and].push({
+                [Op.or]:[{onSale:true},{[Op.and]:[{onSale:false}, {userId:user.id}]}]
+            });
+        }
 
         console.log(filteringCriteria);
         try{
