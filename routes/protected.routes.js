@@ -65,6 +65,10 @@ router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
 
 
 // Norman
+const RecipeTagsController = require('../controller/recipeTags.controller');
+const recipeTagsController =new RecipeTagsController();
+router.post('/recipetags/:recipeId', recipeTagsController.newRecipeTags); // create new tag
+router.delete('/recipetags/:stepsId', recipeTagsController.deleteRecipeTags); //Delete Tags from Recipe
 
 
 
@@ -77,10 +81,7 @@ router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
 
 
 
-
-
-
-// Manuspon
+// Manuspon 83
 const PurchaseHistoriesController = require("../controller/purchasehistories.controller")
 const purchaseHistoriesController = new PurchaseHistoriesController();
 router.get("/purchasehistories/user/:userId", purchaseHistoriesController.showAll);

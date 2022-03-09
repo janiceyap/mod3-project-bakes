@@ -213,6 +213,12 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating recipe steps:', err)
   })
+
+  await RecipeTags.sync({alter:true}).then(()=>{
+    console.log(`Recipe Tags successfully updated `)
+  }).catch(err=>{
+    console.log('Error updating recipe steps:', err)
+  })
 };
 
 
@@ -233,5 +239,6 @@ module.exports = {
   RecipeRating,
   RecipeSteps,
   RecipeIngredients,
+  RecipeTags
   // RecipeView
 };

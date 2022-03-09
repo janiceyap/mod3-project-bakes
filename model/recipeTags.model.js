@@ -32,9 +32,9 @@ module.exports = function (sequelize){
               },
         },
         {
-            sequelize,
+            sequelize,           
+            tableName: 'tags',
             modelName: 'RecipeTags',
-            tableName: 'Tags',
         }        
     );
     return RecipeTags;

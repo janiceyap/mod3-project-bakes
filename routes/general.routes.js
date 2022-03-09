@@ -65,7 +65,9 @@ router.get('/recipe', recipeController.searchGeneralInfo);
 
 
 // Norman
-
+const RecipeTagsController = require('../controller/recipeTags.controller');
+const recipeTagsController =new RecipeTagsController();
+router.get('/recipertags/:recipeId', recipeTagsController.showTags);// show tags by recipe id
 
 
 
