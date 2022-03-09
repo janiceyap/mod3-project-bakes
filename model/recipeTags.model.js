@@ -17,7 +17,7 @@ module.exports = function (sequelize){
                 field: 'recipe_id'
             },
             tagName: {
-                type: DataTypes.CHAR(50),
+                type: DataTypes.STRING(50),
                 allowNull: false,
                 field: 'tag_name'                
 

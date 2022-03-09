@@ -5,8 +5,8 @@ const {testConnection,syncDatabase} = require('./model/model');
 syncDatabase();
 testConnection();
 
-app.listen(3400, ()=>{
-    console.log("Listening to port 3400");
+app.listen(3300, ()=>{
+    console.log("Listening to port 3300");
 })
 
 // http://localhost:3300/

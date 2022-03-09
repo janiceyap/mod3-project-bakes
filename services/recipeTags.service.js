@@ -1,4 +1,4 @@
-const{RecipeTags, Recipe} = require('../model/model');
+const {RecipeTags} = require('../model/model');
 
 module.exports = {
     newRecipeTags: async (recipeId, newRecipeTags) => {
@@ -49,7 +49,7 @@ module.exports = {
         result.data = recipeTags;
         return result;
     },
-    deleteRecipeTags: async(stepsId) => {
+    deleteRecipeTags: async(tagsId) => {
 
         let result = {
             message: null,
@@ -57,18 +57,18 @@ module.exports = {
             data: null,
         }
 
-        const recipeTags = await RecipeTags.findByPk(stepsId);
-
-        if(!recipeSteps) {
-            result.message = `Tag ${tagsId} from Recipe ${recipeId} is not found.`;
+        const recipeTags = await RecipeTags.findByPk(parseInt(tagsId));
+        console.log(recipeTags);
+        if(!recipeTags) {
+            result.message = `Tag ${tagsId}  is not found.`;
             result.status = 400;
             return result;
         }
 
         await recipeTags.destroy();
-        result.message = `Deletion of Tags ${stepsId} successful.`;
+        result.message = `Deletion of Tags ${tagsId} successful.`;
         result.status = 200;
-        result.data = recipeSteps;
+        result.data = recipeTags;
         return result;
     },
 }
