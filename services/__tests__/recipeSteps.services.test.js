@@ -19,5 +19,16 @@ describe(`Test for creating new Recipe Steps Method.`, () => {
         const results = await testCode.newRecipeSteps(data);
 
         expect(results.status).toBe(200);
-    })
+    });
+
+    test(`Test 3: It should return an array of strings with status 500 if unsucessful.`, async () => {
+
+        RecipeSteps.create = jest.fn().mockRejectedValue(
+            new Error(`Database error.`)
+        );
+
+        const results = await testCode.newRecipeSteps(data);
+
+        expect(results.status).toBe(500);
+    });
 });
