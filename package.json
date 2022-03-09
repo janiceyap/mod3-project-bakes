@@ -4,7 +4,8 @@
   "description": "This app was jointly developed by michieet, janiceyap, m-chocolate, normanhfz and quackz90 in a 5 days sprint as part of our module project for NTU / Skills Union software Developer Immersive Program.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -29,5 +30,8 @@
   },
   "devDependencies": {
     "jest": "^27.5.1"
+  },
+  "engines":{
+    "node":"16.x"
   }
 }
