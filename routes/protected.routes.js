@@ -35,6 +35,7 @@ router.delete('/recipe/:recipeId', recipeController.deleteRecipe); //delete reci
 // router.get('/recipe/:recipeId', recipe.retrieveByID);
 // router.get('/recipe/:recipeId',recipeController.retrieveByID);
 // router.delete('/recipe/:recipeId',recipe.deleteByID);
+router.get('/recipe', recipeController.searchGeneralInfoP);
 
 
 
