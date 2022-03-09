@@ -1,8 +1,5 @@
 const {RecipeSteps, Recipe} = require('../model/model');
 
-//const recipeSteps = []; Shld i portray this as empty array so that steps will be numbered 
-//as per index?
-
 module.exports = {
     showAll: async (recipeId) => {
 
@@ -12,7 +9,6 @@ module.exports = {
             data: null,
         }
 
-        // const recipe = await Recipe.findByPk(recipeId);
         const recipeSteps = await RecipeSteps.findAll({where: {recipeId}});
         console.log('Recipe Steps:', recipeSteps);
 
