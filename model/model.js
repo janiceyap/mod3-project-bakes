@@ -142,17 +142,17 @@ RecipeIngredients.belongsTo(Recipe, {
 PurchaseHistories.belongsTo(User, {
   foreignKey: "userId"
 })
-// PurchaseHistories.hasMany(Receipe, {
-//   foreignKey: "recipeId"
-// })
+Recipe.hasMany(PurchaseHistories, {
+  foreignKey: "recipeId"
+})
 
 Bookmark.belongsTo(User, {
   foreignKey: "userId"
 })
 
-// Bookmark.hasMany(Recipe, {
-//   foreignKey: "receipeId"
-// })
+Recipe.hasMany(Bookmark, {
+  foreignKey: "recipeId"
+})
 
 
 

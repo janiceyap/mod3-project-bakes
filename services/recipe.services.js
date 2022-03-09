@@ -1,10 +1,10 @@
 const {Recipe,User} = require('../model/model');
 const {Op} = require('sequelize');
-const { valuesIn } = require('lodash');
+const { valuesIn, result } = require('lodash');
 const generalInfo = [
     'recipeId',
     'recipeName',
-    'user_id',
+    'userId',
     'starRating',
     'description',
     'servings',
@@ -17,7 +17,7 @@ const generalInfo = [
 
 const intValues = [
     'recipeId',
-    'user_id',
+    'userId',
     'maxPrepTimeInMin',
     'minPrepTimeInMin',
     'prepTimeInMin',
@@ -88,6 +88,14 @@ const RecipeController = {
 
 
     searchGeneralInfo:async function(searchParams){
+
+        const results = {
+            status: null,
+            message: null,
+            data: null,
+
+        };
+
         const filteringCriteria={};
 
         for (const [key, value] of Object.entries(searchParams)){
@@ -144,7 +152,7 @@ const RecipeController = {
                     break;
 
                 case (upperCaseValues.includes(key)):
-                    filteringCriteria[key] ={[Op.eq]:value.toUpperCase};
+                    filteringCriteria[key] ={[Op.eq]:value.toUpperCase()};
                     break;
                 default:
                     filteringCriteria[key] ={[Op.eq]:value}
@@ -157,12 +165,21 @@ const RecipeController = {
         filteringCriteria['onSale']= true;
 
         console.log(filteringCriteria);
+        try{
+            let recipe = await Recipe.findAll({
+                where: filteringCriteria
+            });
 
-        let recipe = await Recipe.findAll({
-            where: filteringCriteria
-        });
+            results.status=200;
+            results.message=`Search completed with ${recipe.length} result(s)`;
+            results.data = recipe;
+            return results;
 
-        return recipe;
+        } catch (err){
+            results.status=500;
+            results.message=err;
+            return results;
+        }
 
     },
 
@@ -204,7 +221,7 @@ const RecipeController = {
 
 
         } else{
-            result.status=500;
+            result.status=401;
             result.message ='User not authorized to amend data for this recipe.';
             return result;
         }
