@@ -6,18 +6,18 @@ module.exports = function (sequelize){
     RecipeTags.init(
         {
             id: {
-                type: Datatypes.INTERGER,
+                type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
                 field: 'tag_id'
             },
             recipeId: {
-                type: Datatypes.INTERGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'recipe_id'
             },
             tagName: {
-                type: Datatypes.CHAR(50),
+                type: DataTypes.STRING(50),
                 allowNull: false,
                 field: 'tag_name'                
 
@@ -32,9 +32,9 @@ module.exports = function (sequelize){
               },
         },
         {
-            sequelize,
+            sequelize,           
+            tableName: 'tags',
             modelName: 'RecipeTags',
-            tableName: 'Tags',
         }        
     );
     return RecipeTags;

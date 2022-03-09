@@ -3,9 +3,13 @@ const { Sequelize } = require("sequelize");
 require('dotenv').config()
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: "localhost",
-  dialect: "postgres",
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
 });
 
 // Test connection function
@@ -42,8 +46,8 @@ const RecipeIngredients = require('./recipeIngredients.model')(sequelize);
 
 
 // Norman
-// const RecipeTags = require('./recipeTags.model')(sequelize);
-// const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
+const RecipeTags = require('./recipeTags.model')(sequelize);
+const RecipeEquipment = require('./recipeEquipment.model')(sequelize);
 
 
 
@@ -93,12 +97,12 @@ RecipeRating.belongsTo(User,{
 
 
 // Norman
-// RecipeTags.belongsto(Recipe,{
-//   foreignKey: 'recipeId',
-// });
-// RecipeEquipment.belongsto(Recipe,{
-//   foreignKey: 'recipeId',
-// });
+RecipeTags.belongsTo(Recipe,{
+  foreignKey: 'recipeId',
+});
+RecipeEquipment.belongsTo(Recipe,{
+  foreignKey: 'recipeId',
+});
 
 
 
@@ -213,6 +217,12 @@ async function syncDatabase(){
   }).catch(err=>{
     console.log('Error updating recipe steps:', err)
   })
+
+  await RecipeTags.sync({alter:true}).then(()=>{
+    console.log(`Recipe Tags successfully updated `)
+  }).catch(err=>{
+    console.log('Error updating recipe steps:', err)
+  })
 };
 
 
@@ -233,5 +243,6 @@ module.exports = {
   RecipeRating,
   RecipeSteps,
   RecipeIngredients,
+  RecipeTags
   // RecipeView
 };
