@@ -36,7 +36,7 @@ module.exports = {
         }
 
         // const recipe = await Recipe.findByPk(recipeId);
-        const recipeTags = await RecipeTags.showTags({where: {recipeId}});
+        const recipeTags = await RecipeTags.findAll({where: {recipeId}});
         console.log('Recipe Tags:', recipeTags);
 
         if(!recipeTags.length){
