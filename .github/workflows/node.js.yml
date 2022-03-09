@@ -6,6 +6,7 @@ name: Node.js CI
 on:
   push:
     branches: 
+    - main
     - janice
     - jianNan
     - mcho
@@ -14,6 +15,7 @@ on:
     
   pull_request:
     branches: 
+    - main
     - janice
     - jianNan
     - mcho
