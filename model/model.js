@@ -3,14 +3,22 @@ const { Sequelize } = require("sequelize");
 require('dotenv').config()
 
 // DB Connection Configuration... the 1st 3 arguments are "databaseName", "Username", "password"
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
+let sequelize;
+if(process.env.DATABASE_URL!== undefined){
+ sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
     }
-  }
-});
+  });
+} else{
+  sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASSWORD,  {
+    host:'localhost',
+    dialect:'postgres'
+    }
+  )};
 
 // Test connection function
 async function testConnection() {
