@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const userJoi = require("../middleware/user.joi");
+const userJoi = require('../middleware/user.joi');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const s3ProfilePic = require('../middleware/s3profilepic');
 
 router.use("/", (req, res, next) => {
     console.log("You have called a general route.");
@@ -11,10 +14,8 @@ router.use("/", (req, res, next) => {
 // Janice
 const UserController = require("../controller/user.controller")
 const userController = new UserController();
-router.post("/user", userController.register);
+router.post("/user", upload.single('image'), s3ProfilePic.uploadToS3, userController.register);
 router.post("/user/login", userJoi.inputLogin, userController.login);
-
-
 
 
 
