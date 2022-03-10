@@ -15,18 +15,31 @@ module.exports= function(sequelize){
             type: DataTypes.INTEGER,
             allowNull: false,
             field: 'reviewer_user_id',
+            set(value){
+                this.setDataValue('reviewerUserId', parseInt(value))
+            },
         },
 
         recipeId:{
             type: DataTypes.INTEGER,
             allowNull: false,
-            field: 'reviewed_user_id',
+            field: 'recipe_id',
         },
 
         starRating:{
             type: DataTypes.INTEGER,
             allowNull: false,
             field: 'start_rating',
+            validate:{
+                isBtwZeroAndFive(value){
+                    if (isNaN(value) || value<0 || value>5){
+                        throw new Error('Rating value must be an integer between 0 to 5');
+                    }
+                }
+            },
+            set(value){
+                this.setDataValue('starRating', parseInt(value))
+            },
         },
 
         comments:{
