@@ -63,3 +63,16 @@ jobs:
         source_ref: ${{ github.ref }}
         target_branch: main
         commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'
+
+  deploy:
+    if: ${{needs.release.result == 'success'}}
+    needs: release
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "calm-forest-86543" #Must be unique in Heroku
+          heroku_email: "jiannankwek@gmail.com"
