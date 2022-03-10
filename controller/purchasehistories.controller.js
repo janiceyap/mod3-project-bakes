@@ -4,7 +4,7 @@ class PurchaseHistoriesController {
 
     async showAll(req, res, next) {
 
-        const result = await purchaseHistoriesService.showAll(req.params.userId);
+        const result = await purchaseHistoriesService.showAll(req.user);
 
         res.status(result.status);
 
@@ -13,30 +13,13 @@ class PurchaseHistoriesController {
 
     async newPurchase(req, res, next) {
 
-        const result = await purchaseHistoriesService.newPurchase(req.body);
+        const result = await purchaseHistoriesService.newPurchase(req.body,req.user);
 
         res.status(result.status);
 
         return res.json({message: result.message, data: result.data});
     }
 
-    async deletePurchase(req, res, next) {
-    
-        const result = await  purchaseHistoriesService.deletePurchase(req.params.purchaseId);
-
-        res.status(result.status);
-
-        return res.json({message: result.message, data: result.data});
-    }
-
-    async updatePurchase(req, res, next) {
-        
-        const result = await purchaseHistoriesService.updatePurchase(req.body);
-
-        res.status(result.status);
-
-        return res.json({message: result.message, data: result.data});
-    }
 }
 
 module.exports = PurchaseHistoriesController;

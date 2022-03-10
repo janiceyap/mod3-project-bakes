@@ -2,7 +2,7 @@ const { Bookmark, Recipe } = require("../model/model")
 
 
 module.exports = {
-    showAll: async (userId) => {
+    showAll: async (user) => {
 
         let result = {
             message: null,
@@ -11,7 +11,7 @@ module.exports = {
         }
 
         const findBookmark = await Bookmark.findAll({ 
-            where: {userId : userId} 
+            where: {userId : user.id} 
         })
 
 
@@ -38,7 +38,7 @@ module.exports = {
         }
     },
 
-    newBookmark: async (userId,recipeId) => {
+    newBookmark: async (user,recipeId) => {
         let result = {
             message: null,
             status: null,
@@ -48,7 +48,7 @@ module.exports = {
         try {
         const findBookmark = await Bookmark.findAll({
             where: {
-                userId : userId,
+                userId : user.id,
                 recipeId : recipeId
             } })
 
@@ -60,7 +60,7 @@ module.exports = {
 
         const newBookmarkData = await Bookmark.create(
             {
-                userId : userId ,
+                userId : user.id ,
                 recipeId : recipeId,
             }
         );
@@ -69,7 +69,7 @@ module.exports = {
 
         result.data = recipeDetails;
         result.status = 200;
-        result.message = `New Bookmark created!`;
+        result.message = `New Bookmark created for User ${user.id}!`;
         return result;
     
         } catch (err) {
@@ -82,7 +82,7 @@ module.exports = {
  
     },
 
-    deleteBookmark: async (userId,recipeId) => {
+    deleteBookmark: async (user,recipeId) => {
         let result = {
             message: null,
             status: null,
@@ -92,7 +92,7 @@ module.exports = {
         try {
         const checkBookmark = await Bookmark.findOne({
                 where: {
-                    userId : userId,
+                    userId : user.id,
                     recipeId : recipeId
                 } 
             });
