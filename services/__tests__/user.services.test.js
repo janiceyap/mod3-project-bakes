@@ -3,6 +3,10 @@ const testCode = require('../user.services');
 const bcrypt = require( 'bcrypt' );
 const jwt = require( 'jsonwebtoken' );
 
+afterEach(()=>{
+    jest.clearAllMocks();
+})
+
 const loginData = {
     email: "testinghard@gmail.com",
     pwd: "securepassword"
