@@ -4,7 +4,7 @@ class bookmarkController {
 
     async showAll(req, res, next) {
 
-        const result = await bookmarkService.showAll(req.params.userId);
+        const result = await bookmarkService.showAll(req.user);
 
         res.status(result.status);
 
@@ -13,7 +13,7 @@ class bookmarkController {
 
     async newBookmark(req, res, next) {
 
-        const result = await bookmarkService.newBookmark(req.params.userId,req.body.recipeId);
+        const result = await bookmarkService.newBookmark(req.user,req.body.recipeId);
 
         res.status(result.status);
 
@@ -22,7 +22,7 @@ class bookmarkController {
     
     async deleteBookmark (req, res, next) {
 
-        const result = await bookmarkService.deleteBookmark(req.params.userId,req.body.recipeId); 
+        const result = await bookmarkService.deleteBookmark(req.user,req.body.recipeId); 
 
         res.status(result.status);
 

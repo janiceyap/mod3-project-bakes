@@ -1,7 +1,12 @@
-const {PurchaseHistories} = require("../../model/model");
+const {PurchaseHistories, User} = require("../../model/model");
 const purchasehistoriesServices = require("../purchasehistories.services");
 const testCode = require("../purchasehistories.services");
 
+afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+const user = 7
 const data = {
     userId: 7,
     recipeId: 2,
@@ -17,38 +22,26 @@ const data = {
 
 describe (`Test for Purchase Histories`, () => {
 
-    test(`Test 1: FindbyPk under deletePurchase should be called once`, async() => {
-        PurchaseHistories.findByPk = jest.fn();
-        const result = await testCode.deletePurchase(data);
-        expect(PurchaseHistories.findByPk).toBeCalled();
+    test(`Test 1: FindbyPk under showAll should be called once`, async() => {
+        User.findByPk = jest.fn();
+        PurchaseHistories.findAll = jest.fn();
+        const result = await testCode.showAll(data);
+        expect(PurchaseHistories.findAll).toBeCalled();
     })
 
     test(`Test 2: It should return status 200 if Purchase Creation is successful`, async () => {
         PurchaseHistories.findOne = jest.fn().mockReturnValue();
-        PurchaseHistories.create = jest.fn().mockReturnValue(data);
-        const result = await testCode.newPurchase(data);
-        //console.log("---test 2 result---", result)
+        PurchaseHistories.create = jest.fn().mockReturnValue(data,user);
+        const result = await testCode.newPurchase(data,user);
         expect(result.status).toBe(200);
         expect(result.data).toBe(data);
     })
     
-//add in case when it fails
-    // test (`Test 3: It should return error status if Purchase Creation fails`, async () => {
-    //     PurchaseHistories.findOne = jest.fn().mockReturnValue();
-    //     PurchaseHistories.create = jest.fn().mockRejectedValue();
-    //     const result = await testCode.newPurchase(data);
-    //     expect(result.status).toBe(500);
-    // })
-
-    // test(`Test 2: It should return status 200 if there's user purchase `, async() => {
-    //     const result = await testCode.showAll(data.userId);
-    //     expect(result.status).toBe(200); 
-    // })
-
-    // test(`Test 3: It should return status 400 if new creation fail`, async() => {
-    //     PurchaseHistories.create = jest.fn().mockRejectedValue(new Error('Error'));
-    //     const result = await testCode.newPurchase(data);
-    //     expect(result.status).toBe(500); 
-    // })
+    test (`Test 3: It should return error status if Purchase Creation fails`, async () => {
+        PurchaseHistories.findOne = jest.fn().mockReturnValue();
+        PurchaseHistories.create = jest.fn().mockRejectedValue();
+        const result = await testCode.newPurchase(data);
+        expect(result.status).toBe(500);
+    })
 
 })

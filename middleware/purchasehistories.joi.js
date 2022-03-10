@@ -8,7 +8,7 @@ module.exports = {
             userId: Joi.number(),
             recipeId: Joi.number(),
             purchaseDate: Joi.date(),
-            subtotal: Joi.number().positive().greater(0).required(),
+            subtotal: Joi.number().required(),
             paymentMethod: Joi.string().uppercase(),
             paymentTxnId: Joi.string().uppercase(),
             invoiceId: Joi.string().uppercase()
