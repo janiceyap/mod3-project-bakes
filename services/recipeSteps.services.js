@@ -1,6 +1,7 @@
-const {RecipeSteps, Recipe} = require('../model/model');
+const {RecipeSteps} = require('../model/model');
 
 module.exports = {
+
     showAll: async (recipeId) => {
 
         let result = {
@@ -12,11 +13,12 @@ module.exports = {
         const recipeSteps = await RecipeSteps.findAll({where: {recipeId}});
         console.log('Recipe Steps:', recipeSteps);
 
-        if(!recipeSteps.length){
+        if(!recipeSteps.length) {
             result.message = `No steps registered under ${recipeId}.`;
             result.status = 404;
             return result;
         }
+
         result.message = `Showing steps from Recipe ${recipeId}`;
         result.status = 200;
         result.data = recipeSteps;
@@ -33,14 +35,16 @@ module.exports = {
 
         try {
             const newSteps = await RecipeSteps.create(
+
                 {
                     recipeId: recipeId,
                     stepsNo: newRecipeSteps,
                 }
             );
-            result.data = newSteps;
-            result.status = 200;
+
             result.message = `New recipe steps created.`;
+            result.status = 200;
+            result.data = newSteps;
             return result;
         } catch(err) {
             console.log(err);
@@ -61,7 +65,7 @@ module.exports = {
         const recipeSteps = await RecipeSteps.findByPk(stepsId);
 
         if(!recipeSteps) {
-            result.message = `Step ${stepsId} from Recipe ${recipeId} is not found.`;
+            result.message = `Step from Recipe is not found.`;
             result.status = 400;
             return result;
         }
@@ -73,7 +77,7 @@ module.exports = {
         return result;
     },
 
-    updateRecipeSteps: async(updateSteps) => {
+    updateRecipeSteps: async(stepsId, updateRecipeSteps) => {
 
         let result = {
             message: null,
@@ -81,15 +85,15 @@ module.exports = {
             data: null,
         }
 
-        const recipeSteps = await RecipeSteps.findByPk(updateSteps.stepsId);
+        const recipeSteps = await RecipeSteps.findByPk(stepsId);
 
         if(!recipeSteps) {
-            result.message = `Recipe step not found`;
+            result.message = `Recipe step not yet created.`;
             result.status = 400;
             return result;
         }
 
-        // steps.id = updateSteps.stepsId;
+        recipeSteps.stepsNo = updateRecipeSteps;
         await recipeSteps.save();
         result.message = `Update steps successfully.`;
         result.status = 200;

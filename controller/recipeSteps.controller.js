@@ -30,7 +30,7 @@ class RecipeStepsController {
 
     async updateRecipeSteps(req, res, next){
 
-        const result = await recipeStepsService.updateRecipeSteps(req.body);
+        const result = await recipeStepsService.updateRecipeSteps(req.params.stepsId, req.body.updateRecipeSteps);
 
         res.status(result.status);
 

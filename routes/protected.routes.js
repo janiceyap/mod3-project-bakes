@@ -57,16 +57,15 @@ const recipeStepsController = new RecipeStepsController();
 const recipeStepsJoi = require('../middleware/recipeSteps.joi.js')
 router.get('/recipeSteps/:recipeId', recipeStepsController.showAll);
 router.post('/recipeSteps/:recipeId', recipeStepsJoi.inputSteps, recipeStepsController.newRecipeSteps);
-router.put('/recipe/:stepsId', recipeStepsController.updateRecipeSteps);
-router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
+router.delete('/recipeSteps/:stepsId', recipeStepsController.deleteRecipeSteps);
+router.put('/recipeSteps/:stepsId', recipeStepsController.updateRecipeSteps);
 
-
-
-
-
-
-
-
+const RecipeIngredientsController = require('../controller/recipeIngredients.controller');
+const recipeIngredientsController = new RecipeIngredientsController();
+router.get('/recipeIngredients/:recipeId', recipeIngredientsController.showAll);
+router.post('/recipeIngredients/:recipeId', recipeIngredientsController.newRecipeIngredients);
+router.delete('/recipeIngredients/:ingredientId', recipeIngredientsController.deleteRecipeIngredients);
+router.put('/recipeIngredients/:ingredientId', recipeIngredientsController.updateRecipeIngredients);
 // Norman
 const RecipeTagsController = require('../controller/recipeTags.controller');
 const recipeTagsController =new RecipeTagsController();
