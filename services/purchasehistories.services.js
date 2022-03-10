@@ -58,11 +58,11 @@ module.exports = {
             }
                 let computeGST = newPurchaseDetails.subtotal*gst;
                 let computeTotal = newPurchaseDetails.subtotal + computeGST; 
-                let purchaseId = 1;
             
-            const firstPurchase = await PurchaseHistories.findByPk(purchaseId)
+            const allPurchase = await PurchaseHistories.findAll()
+            console.log("---allPurchase---",allPurchase)
 
-            if (!firstPurchase) {
+            if (allPurchase.length === 0) {
                 nextInvoiceNo = "SB1000";   
             } 
             else {
