@@ -19,16 +19,22 @@ module.exports = function(sequelize) {
                 field: 'recipe_id',
             },
 
-            quantity:{
-                type: DataTypes.FLOAT,
+            ingredientName:{
+                type: DataTypes.STRING,
                 allowNull: false,
-                field: 'quantity',
+                field: 'ingredient_name'
             },
 
-            units:{
+            ingredientQuantity:{
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                field: 'ingredient_quantity',
+            },
+
+            ingredientUnits:{
                 type: DataTypes.STRING(20),
                 allowNull: false,
-                field: 'units',
+                field: 'ingredient_units',
             },
 
             createdAt:{
