@@ -4,6 +4,19 @@ const jwt = require( 'jsonwebtoken' );
 require('dotenv').config()
 const saltRounds = 10;
 let passwordHash = "";
+const S3ProfilePic = require('aws-sdk/clients/s3');
+const fs = require('fs');
+
+const bucketName = process.env.AWS_BUCKET_NAME;
+const region = process.env.AWS_BUCKET_REGION;
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const s3ProfilePic = new S3ProfilePic({
+    region,
+    accessKeyId,
+    secretAccessKey
+});
 
 module.exports = {
 
@@ -264,5 +277,18 @@ module.exports = {
         result.status = 200;
         result.data = chef;
         return result;   
+    },
+
+    showPic: async (chefId) => {
+
+        const chef = await User.findByPk(chefId);
+    
+        const downloadParams = {
+            Key: chef.profilePic,
+            Bucket: bucketName
+        };
+
+        return s3ProfilePic.getObject(downloadParams).createReadStream();
+
     }
 };
