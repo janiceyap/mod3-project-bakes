@@ -54,11 +54,11 @@ router.get('/recipe', recipeController.searchGeneralInfoP);
 // Michelle
 const RecipeStepsController = require('../controller/recipeSteps.controller');
 const recipeStepsController = new RecipeStepsController();
+const recipeStepsJoi = require('../middleware/recipeSteps.joi.js')
 router.get('/recipeSteps/:recipeId', recipeStepsController.showAll);
-router.post('/recipeSteps/:recipeId', recipeStepsController.newRecipeSteps);
+router.post('/recipeSteps/:recipeId', recipeStepsJoi.inputSteps, recipeStepsController.newRecipeSteps);
 router.put('/recipe/:stepsId', recipeStepsController.updateRecipeSteps);
 router.delete('/recipe/:stepsId', recipeStepsController.deleteRecipeSteps);
-
 
 
 
