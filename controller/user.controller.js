@@ -77,6 +77,13 @@ class UserController {
             data: result.data
         });
     }
+
+    async showPic(req, res, next) {
+
+        const readStream = await userService.showPic(req.params.userid);
+        readStream.pipe(res);
+    }
+
 }
 
 module.exports = UserController;

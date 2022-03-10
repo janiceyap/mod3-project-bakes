@@ -16,7 +16,7 @@ const UserController = require("../controller/user.controller")
 const userController = new UserController();
 router.post("/user", upload.single('image'), s3ProfilePic.uploadToS3, userController.register);
 router.post("/user/login", userJoi.inputLogin, userController.login);
-
+router.get("/user/profilepic/:userid", userController.showPic);
 
 
 
