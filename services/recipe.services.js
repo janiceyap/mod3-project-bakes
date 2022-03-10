@@ -166,8 +166,8 @@ const RecipeServices = {
                     break;
 
             };
-
-            if(Object.entries(individualCriteria).length!==0){
+            
+            if(Object.entries(individualCriteria).length!==0|| key=== 'keyWord'){  //seems like js does not recognize {[Op.or]:[{'recipeName':{[Op.iLike]:'%'+value+'%'}}, {'description':{[Op.iLike]:'%'+value+'%'}},]} as an entry
 
                 filteringCriteria[Op.and].push(individualCriteria);
             }
