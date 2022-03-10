@@ -31,7 +31,8 @@ describe (`Test for Purchase Histories`, () => {
 
     test(`Test 2: It should return status 200 if Purchase Creation is successful`, async () => {
         PurchaseHistories.findOne = jest.fn().mockReturnValue();
-        PurchaseHistories.create = jest.fn().mockReturnValue(data,user);
+        PurchaseHistories.findAll = jest.fn().mockReturnValue([data]);
+        PurchaseHistories.create = jest.fn().mockReturnValue(data);
         const result = await testCode.newPurchase(data,user);
         expect(result.status).toBe(200);
         expect(result.data).toBe(data);
