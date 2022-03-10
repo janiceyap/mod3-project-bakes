@@ -36,7 +36,6 @@ module.exports = {
         }
 
         // Handling imageUrl for storage -- park a value for now
-        let imageUrl = "imageUrl";
 
         const newUser = await User.create(
             {
@@ -44,7 +43,7 @@ module.exports = {
                 email: newUserDetails.email, 
                 hashedPwd: passwordHash,
                 role: newUserDetails.role,
-                profilePic: imageUrl,
+                profilePic: newUserDetails.profilePic || "imageURL",
                 noOfFollows: 0
             }
         );
