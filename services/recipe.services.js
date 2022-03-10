@@ -1,6 +1,6 @@
 const {Recipe,User} = require('../model/model');
 const {Op} = require('sequelize');
-const { valuesIn, result } = require('lodash');
+
 const generalInfo = [
     'recipeId',
     'recipeName',
@@ -34,7 +34,7 @@ const floatValues = [
 
 const booleanValues = [
     'onSale',
-]
+];
 
 const userAmendField=[
     'recipeName',
@@ -43,16 +43,16 @@ const userAmendField=[
     'prepTimeInMin',
     'difficultyLevel',
     'onSale',
-]
+];
 const upperCaseValues = [
     'difficultyLevel',
     'maxDifficultyLevel',
     'minDifficultyLevel',
-]
+];
 
 
 
-const RecipeController = {
+const RecipeServices = {
 
     createNew: async function (data, user){
 
@@ -284,4 +284,4 @@ const RecipeController = {
     }
 }
 
-module.exports=RecipeController;
+module.exports=RecipeServices;

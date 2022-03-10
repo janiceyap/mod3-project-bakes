@@ -27,16 +27,15 @@ router.post("/unfollow", userController.unfollowUser);
 
 // JianNan
 const RecipeController = require('../controller/recipe.controller');
+const RecipeRatingController = require('../controller/recipeRating.controller');
 const recipeController = new RecipeController();
+const recipeRatingController = new RecipeRatingController();
 router.post('/recipe',recipeController.createNew);// post new recipe with the following properties sent as json in body: recipeName(string), description(string), servings(int), prepTimeInMin(int), difficultyLevel(EASY, INTERMEDIATE or HARD) 
 router.put('/recipe/:recipeId', recipeController.updateRecipe); 
 // update recipe belonging to the recipe own. Accept following properties sents as json in body:  recipeName(string), description(string), servings(int), prepTimeInMin(int), difficultyLevel(EASY, INTERMEDIATE or HARD), onSale(boolean)
 router.delete('/recipe/:recipeId', recipeController.deleteRecipe); //delete recipeId belonging to the recipe owner only. Must include query ?confirm=true
-// router.get('/recipe/:recipeId', recipe.retrieveByID);
-// router.get('/recipe/:recipeId',recipeController.retrieveByID);
-// router.delete('/recipe/:recipeId',recipe.deleteByID);
-router.get('/recipe', recipeController.searchGeneralInfoP);
-
+router.get('/recipe', recipeController.searchGeneralInfoP);// similar to search in General. Accept onSale= true to filter away user's recipe not on sale.
+router.post('/recipeRating/:recipeId', recipeRatingController.createNew); //allow user who have purchased a recipe (:recipeId) to leave a rating. Accepts a JSON object with starRating(int)>0,<5 (required) and comments (500 char).
 
 
 
@@ -91,6 +90,7 @@ router.get("/purchasehistories", purchaseHistoriesController.showAll);
 router.post("/purchasehistories", purchaseHistJoi.verifyPurchase,purchaseHistoriesController.newPurchase);
 
 const BookmarkController = require("../controller/bookmark.controller");
+const { RecipeRating } = require('../model/model');
 const bookmarkController = new BookmarkController();
 router.get("/bookmark", bookmarkController.showAll);
 router.post("/bookmark",bookmarkController.newBookmark);
