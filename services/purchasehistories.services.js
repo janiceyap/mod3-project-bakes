@@ -12,23 +12,23 @@ module.exports = {
 
         try {
 
-        const findUser = await User.findByPk(user.id);
-        const purchasesDetails = await PurchaseHistories.findAll( {where: {userId : user.id}} )
+            const findUser = await User.findByPk(user.id);
+            const purchasesDetails = await PurchaseHistories.findAll( {where: {userId : user.id}} )
 
-        //console.log ("---Purchase Details---: ",purchasesDetails);
-        if ( !purchasesDetails.length ) {
-            result.message = `No purchase history found for user ${user.id}`;
-            result.status = 400;
-            return result; 
-        } 
+            //console.log ("---Purchase Details---: ",purchasesDetails);
+            if ( !purchasesDetails.length ) {
+                result.message = `No purchase history found for user ${user.id}`;
+                result.status = 400;
+                return result; 
+            } 
 
-        result.message = `Show all purchases from User ${user.id} ${findUser.name}`
-        result.status = 200;
-        result.data = purchasesDetails;
+            result.message = `Show all purchases from User ${user.id} ${findUser.name}`
+            result.status = 200;
+            result.data = purchasesDetails;
 
-        return result;
+            return result;
 
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             result.message = err.message;
             return result;
@@ -44,8 +44,8 @@ module.exports = {
         }
         try {
 
-            const findPurchase = await PurchaseHistories.findOne({
-                where: {
+            const findPurchase = await PurchaseHistories.findOne({ where: 
+                {
                     userId : user.id,
                     recipeId : newPurchaseDetails.recipeId
                 }
@@ -58,19 +58,31 @@ module.exports = {
             }
                 let computeGST = newPurchaseDetails.subtotal*gst;
                 let computeTotal = newPurchaseDetails.subtotal + computeGST; 
+                let purchaseId = 1;
+            
+            const firstPurchase = await PurchaseHistories.findByPk(purchaseId)
+
+            if (!firstPurchase) {
+                nextInvoiceNo = "SB1000";   
+            } 
+            else {
+                    const findLastInvoice = await PurchaseHistories.findOne({ order: [ [ 'invoiceId', "DESC"]] });
+                    console.log("---findLastInvoiceNo---",findLastInvoice.invoiceId)
+                    nextInvoiceNo = "SB"+(parseInt(findLastInvoice.invoiceId.slice(2))+1)
+                }
 
             const newPurchase = await PurchaseHistories.create(
-                { 
-                    userId: user.id,
-                    recipeId: newPurchaseDetails.recipeId,
-                    purchaseDate: newPurchaseDetails.purchaseDate,
-                    subtotal: newPurchaseDetails.subtotal,
-                    gst: computeGST,
-                    total: computeTotal,
-                    paymentTxnId : newPurchaseDetails.paymentTxnId,
-                    paymentMethod: newPurchaseDetails.paymentMethod,
-                    invoiceId : newPurchaseDetails.invoiceId,
-                }
+            { 
+                userId: user.id,
+                recipeId: newPurchaseDetails.recipeId,
+                purchaseDate: newPurchaseDetails.purchaseDate,
+                subtotal: newPurchaseDetails.subtotal,
+                gst: computeGST,
+                total: computeTotal,
+                paymentTxnId : newPurchaseDetails.paymentTxnId,
+                paymentMethod: newPurchaseDetails.paymentMethod,
+                invoiceId : nextInvoiceNo,
+            }
             );
 
             result.data = newPurchase;
@@ -78,7 +90,8 @@ module.exports = {
             result.message = `New Purchase created!`;
             return result;
 
-        } catch(err) {
+
+        } catch (err) {
             console.log(err);
             result.status = 500;
             result.message = err.message;
