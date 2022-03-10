@@ -19,7 +19,7 @@ router.get("/user", jwtauthenticate.isAdmin, userController.showAll);
 router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
 router.post("/follow", userController.followUser);
 router.post("/unfollow", userController.unfollowUser);
-
+// router.get("/user/profilepic/:userid", userController.showPic);
 
 
 

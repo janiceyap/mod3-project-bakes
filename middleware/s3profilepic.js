@@ -20,6 +20,8 @@ module.exports = {
 
     uploadToS3: async (req, res, next) => {
 
+        // This function is a middleware that uploads to s3 and returns the key in the request parameters.
+
         if (req.file){
             console.log("Request.file", req.file);
 
@@ -44,5 +46,6 @@ module.exports = {
         }
         next();
     }
+
 }
 
