@@ -95,7 +95,7 @@ describe(`Test for searchGeneralInfo Method`,()=>{
                         {'recipeName':{[Op.iLike]:'%Chicken%'}},
                         {'description':{[Op.iLike]:'%Chicken%'}}
                     ]},
-                   { onSale:true}
+                   {onSale:true}
                 ]
             }
         });
