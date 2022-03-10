@@ -66,9 +66,9 @@ module.exports = {
                 nextInvoiceNo = "SB1000";   
             } 
             else {
-                    const findLastInvoice = await PurchaseHistories.findOne({ order: [ [ 'purchase_id', "DESC"]] });
-                    console.log("---findLastInvoiceNo---",findLastInvoice.invoiceId)
-                    nextInvoiceNo = "SB"+(parseInt(findLastInvoice.invoiceId.slice(2))+1)
+                    const findLastInvoice = await PurchaseHistories.findAll({ limit: 1, order: [ [ 'id', "DESC"]] });
+                    console.log("---findLastInvoiceNo---",findLastInvoice[0].invoiceId)
+                    nextInvoiceNo = "SB"+(parseInt(findLastInvoice[0].invoiceId.slice(2))+1)
                 }
 
             const newPurchase = await PurchaseHistories.create(
