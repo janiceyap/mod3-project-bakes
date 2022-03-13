@@ -1,4 +1,5 @@
 let { Recipe } = require('../../model/model');
+jest.mock("../../model/model");
 const testCode = require('../recipe.services');
 let {Op} = require('sequelize');
 const { user } = require('pg/lib/defaults');

@@ -1,4 +1,5 @@
 const {RecipeSteps} = require('../../model/model');
+jest.mock("../../model/model");
 const testCode = require('../recipeSteps.services');
 
 const data = {

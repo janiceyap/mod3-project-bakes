@@ -1,4 +1,5 @@
 const { User, FollowChef } = require( "../../model/model" );
+jest.mock("../../model/model");
 const testCode = require('../user.services');
 
 afterEach(()=>{
