@@ -1,6 +1,7 @@
 const { update } = require("lodash");
 const { user } = require("pg/lib/defaults");
 const { Recipe, RecipeRating, PurchaseHistories } = require("../../model/model");
+jest.mock("../../model/model");
 const recipeRatingModel = require("../../model/recipeRating.model");
 
 const testCode = require('../recipeRating.services');

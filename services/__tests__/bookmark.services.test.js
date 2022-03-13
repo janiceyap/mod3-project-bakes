@@ -1,4 +1,5 @@
 const { Bookmark, Recipe } = require( "../../model/model");
+jest.mock("../../model/model");
 const testCode = require("../bookmark.services");
 
 afterEach(() => {

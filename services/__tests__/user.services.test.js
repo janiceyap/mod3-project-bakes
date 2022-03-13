@@ -1,7 +1,10 @@
 const { User } = require( "../../model/model" );
+jest.mock("../../model/model");
 const testCode = require('../user.services');
 const bcrypt = require( 'bcrypt' );
+jest.mock('bcrypt');
 const jwt = require( 'jsonwebtoken' );
+jest.mock('jsonwebtoken');
 
 afterEach(()=>{
     jest.clearAllMocks();

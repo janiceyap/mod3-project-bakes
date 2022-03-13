@@ -1,4 +1,5 @@
 const {PurchaseHistories, User} = require("../../model/model");
+jest.mock("../../model/model");
 const purchasehistoriesServices = require("../purchasehistories.services");
 const testCode = require("../purchasehistories.services");
 
